@@ -1,0 +1,15 @@
+{
+    "name": "oscar/php",
+    "authors": [
+        {
+            "name": "Oscar Nevarez",
+            "email": "fu.wire@gmail.com"
+        }
+    ],
+    "autoload": {
+        "files": ["./main.php"]
+    },
+    "require": {
+        "nikic/php-parser": "^4.9"
+    }
+}

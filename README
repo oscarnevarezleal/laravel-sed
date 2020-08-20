@@ -1,0 +1,9 @@
+```
+# This app was bootstrapped with
+composer create-project --prefer-dist laravel/laravel app
+```
+
+# Usage
+```
+docker run --rm -it -v ${PWD}:/usr:ro laravel-sed
+```
