@@ -1,7 +1,6 @@
 {
   "name": "oscarnevarezleal/laravel-sed",
   "description": "CLI tool & command utility that allows to modify the content of a Laravel config file",
-  "version": "0.0.1",
   "type": "library",
   "license": "MIT",
   "authors": [
