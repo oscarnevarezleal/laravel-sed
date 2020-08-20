@@ -9,10 +9,7 @@
   "autoload": {
     "psr-4": {
       "LaraBoot\\": "./src/"
-    },
-    "files": [
-      "./main.php"
-    ]
+    }
   },
   "require": {
     "nikic/php-parser": "^4.9"

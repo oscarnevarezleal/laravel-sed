@@ -5,14 +5,17 @@
  * Date: 8/20/2020
  * Time: 9:02 AM
  */
-
 // There are two autoload files loaded here
 // The first oen is from our laravel installation
-// and the second one atken from this project
-//define('REL_PATH', 'app/');
+// and the second one taken from this project
+if (!empty(getenv('CLI_BIN_DIR'))) {
+    define('REL_PATH', getenv('CLI_BIN_DIR') . '/');
+} else {
+    define('REL_PATH', './');
+}
 
-require_once 'app/vendor/autoload.php';
-require_once 'cli/php/vendor/autoload.php';
+require_once REL_PATH . 'app/vendor/autoload.php';
+require_once REL_PATH . 'cli/php/vendor/autoload.php';
 
 use PhpParser\{NodeDumper, NodeTraverser, PrettyPrinter};
 use PhpParser\ParserFactory;

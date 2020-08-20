@@ -10,7 +10,7 @@ FROM alpine:3.11
 ARG PHP_VERSION=7.4
 ARG USER_ID=blue
 ENV CLI_BIN_DIR=/var/laraseed
-ENV APK_DEL="git curl"
+ENV APK_DEL="curl"
 
 WORKDIR $CLI_BIN_DIR
 
@@ -45,7 +45,12 @@ RUN apk add --update bash curl git && rm -rf /var/cache/apk/*
 
 RUN curl -s -o composer-setup.php https://getcomposer.org/installer \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && rm composer-setup.php
+    && rm composer-setup.php \
+    && curl -SsLo styleci.phar https://github.com/StyleCI/CLI/releases/download/v0.6.2/styleci.phar \
+    && chmod +x styleci.phar \
+    && mv styleci.phar /usr/local/bin/styleci \
+    && curl -L https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer \
+    && mv php-cs-fixer /usr/local/bin/php-cs-fixer
 
 RUN cd $CLI_BIN_DIR/cli/php && \
     composer install
