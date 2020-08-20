@@ -6,7 +6,7 @@
  * Time: 2:44 PM
  */
 
-namespace LaraBoot;
+namespace Laraboot;
 
 use PhpParser\{BuilderFactory, Node};
 

@@ -6,9 +6,9 @@
  * Time: 12:44 PM
  */
 
-namespace LaraBoot\Visitor;
+namespace Laraboot\Visitor;
 
-use LaraBoot\HelperExpressions;
+use Laraboot\HelperExpressions;
 use PhpParser\{Node};
 
 
