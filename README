@@ -5,5 +5,5 @@ composer create-project --prefer-dist laravel/laravel app
 
 # Usage
 ```
-docker run --rm -it -v ${PWD}:/usr:ro laravel-sed
+docker run --rm -it -v ${PWD}:/var/laraseed:ro laravel-sed:latest -a config.edit -p faker_locale -v es_MX
 ```

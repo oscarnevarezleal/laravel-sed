@@ -1,3 +1,2 @@
 #!/bin/bash
-php7 -v
-echo $@
+php7 ${CLI_BIN_DIR}/cli/php/main.php $@

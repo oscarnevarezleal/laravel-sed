@@ -1,15 +1,20 @@
 {
-    "name": "oscar/php",
-    "authors": [
-        {
-            "name": "Oscar Nevarez",
-            "email": "fu.wire@gmail.com"
-        }
-    ],
-    "autoload": {
-        "files": ["./main.php"]
-    },
-    "require": {
-        "nikic/php-parser": "^4.9"
+  "name": "oscar/php",
+  "authors": [
+    {
+      "name": "Oscar Nevarez",
+      "email": "fu.wire@gmail.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "LaraBoot\\": "./src/"
+    },
+    "files": [
+      "./main.php"
+    ]
+  },
+  "require": {
+    "nikic/php-parser": "^4.9"
+  }
 }
