@@ -19,14 +19,17 @@ use PhpParser\ParserFactory;
 
 $shortopts = "";
 $shortopts .= "a:";  // Required value
-$shortopts .= "p:"; // Optional value
+$shortopts .= "p:"; // Required value
+$shortopts .= "e:"; // Required value
 $shortopts .= "v:"; // These options do not accept values
+$shortopts .= "d";
 
 $longopts = array(
-    "action:",     // Required value
-    "path:",    // Optional value
-    "value:",        // No value
-    "opt",           // No value
+    "action:",  // Required value
+    "path:",    // Required value
+    "value:",   // Required value
+    "envor::",  // Required value
+    "debug",    // No value
 );
 $options = getopt($shortopts, $longopts);
 
