@@ -45,7 +45,7 @@ use PhpParser\ParserFactory;
 
 // let's assume we know the whole path of the file we need to modify
 $filePath = APP_BASE_PATH . '/config/app.php';
-echo $filePath;
+
 $code = file_get_contents($filePath);
 //echo $code;
 
@@ -59,7 +59,7 @@ try {
     $traverser = new NodeTraverser();
     $visitor = array_key_exists($options['a'], $modifiers) ? new $modifiers[$options['a']]($options) : null;
     if (!$visitor) {
-        echo 'No modifier specified';
+        echo sprintf('Unknown modifier specified %s', $options['a']);
         exit;
     }
     $traverser->addVisitor($visitor);
@@ -80,4 +80,3 @@ try {
 }
 
 $dumper = new NodeDumper;
-//echo $dumper->dump($ast) . "\n";
