@@ -38,7 +38,8 @@ print_r($options);
 echo 'APP_BASE_PATH=' . APP_BASE_PATH . "\n";
 
 require_once APP_BASE_PATH . '/vendor/autoload.php';
-require_once dirname(__FILE__) . '/vendor/autoload.php';
+
+@require_once dirname(__FILE__) . '/vendor/autoload.php';
 
 use PhpParser\{NodeDumper, NodeTraverser, PrettyPrinter};
 use PhpParser\ParserFactory;
