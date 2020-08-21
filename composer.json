@@ -15,6 +15,13 @@
       "Laraboot\\": "cli/php/src"
     }
   },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Laraboot\\MyServiceProvider"
+      ]
+    }
+  },
   "require": {
     "php": "^7.2",
     "nikic/php-parser": "^4.9"
