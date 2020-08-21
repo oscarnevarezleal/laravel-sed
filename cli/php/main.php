@@ -34,15 +34,17 @@ if (getenv('CLI_BIN_DIR')) {
     define('APP_BASE_PATH', './');
 }
 
-print_r($options);
 echo 'APP_BASE_PATH=' . APP_BASE_PATH . "\n";
 
 require_once APP_BASE_PATH . '/vendor/autoload.php';
+require_once './vendor/autoload.php';
 
-@require_once dirname(__FILE__) . '/vendor/autoload.php';
+//require_once dirname(__FILE__) . '/vendor/autoload.php';
 
 use PhpParser\{NodeDumper, NodeTraverser, PrettyPrinter};
 use PhpParser\ParserFactory;
+
+print_r($options);
 
 // let's assume we know the whole path of the file we need to modify
 $filePath = APP_BASE_PATH . '/config/app.php';
