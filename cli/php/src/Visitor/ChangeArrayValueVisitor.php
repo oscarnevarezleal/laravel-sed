@@ -8,11 +8,13 @@
 
 namespace Laraboot\Visitor;
 
+use PhpParser\NodeVisitorAbstract;
+use PhpParser\Node\Expr\ArrayItem;
+use PhpParser\Node\Scalar\String_;
 use Laraboot\HelperExpressions;
 use PhpParser\{Node};
 
-
-class ChangeArrayValueVisitor extends \PhpParser\NodeVisitorAbstract
+class ChangeArrayValueVisitor extends NodeVisitorAbstract
 {
     private $options;
 
@@ -30,28 +32,24 @@ class ChangeArrayValueVisitor extends \PhpParser\NodeVisitorAbstract
      */
     public function leaveNode(Node $node)
     {
-        if ($node instanceof Node\Expr\ArrayItem) {
+        if ($node instanceof ArrayItem) {
 
-            if ($node->key instanceof Node\Scalar\String_ && $node->key->value === $this->options['p']) {
+            if ($node->key instanceof String_ && $node->key->value === $this->options['p']) {
 
                 if ($this->options['e']) {
                     // Return a function call expression
                     // In the form of '$key' => env($env, $default);
                     list($env, $default) = explode('|', $this->options['e']);
                     HelperExpressions::envOrDefault($env, $default);
-                    return new Node\Expr\ArrayItem(HelperExpressions::envOrDefault($env, $default), $node->key);
+                    return new ArrayItem(HelperExpressions::envOrDefault($env, $default), $node->key);
                 } else {
                     // return a new Array item expression
                     // we kep the same key but the value changed.
-                    return new Node\Expr\ArrayItem(new Node\Scalar\String_($this->options['v']), $node->key);
+                    return new ArrayItem(new String_($this->options['v']), $node->key);
                 }
             } else {
                 return $node;
             }
         }
     }
-}
-
-{
-
 }

@@ -11,7 +11,7 @@
 error_reporting(E_ALL);
 
 $shortopts = "";
-$shortopts .= "a:";  // Required value
+$shortopts .= "a:"; // Required value
 $shortopts .= "p:"; // Required value
 $shortopts .= "e:"; // Required value
 $shortopts .= "v:"; // These options do not accept values
@@ -24,6 +24,7 @@ $longopts = array(
     "envor::",  // Required value
     "directory",    // No value
 );
+
 $options = getopt($shortopts, $longopts);
 
 if (getenv('CLI_BIN_DIR')) {
@@ -46,12 +47,6 @@ use PhpParser\ParserFactory;
 
 print_r($options);
 
-// let's assume we know the whole path of the file we need to modify
-$filePath = APP_BASE_PATH . '/config/app.php';
-
-$code = file_get_contents($filePath);
-//echo $code;
-
 $modifiers = [
     'config.edit' => Laraboot\Visitor\ChangeArrayValueVisitor::class
 ];
@@ -59,20 +54,29 @@ $modifiers = [
 $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
 
 try {
-    $traverser = new NodeTraverser();
+
     $visitor = array_key_exists($options['a'], $modifiers) ? new $modifiers[$options['a']]($options) : null;
+
     if (!$visitor) {
         echo sprintf('Unknown modifier specified %s', $options['a']);
         exit;
     }
-    $traverser->addVisitor($visitor);
+
+    // let's assume we know the whole path of the file we need to modify
+    $filePath = APP_BASE_PATH . '/config/app.php';
+
+    $code = file_get_contents($filePath);
 
     $dumper = new NodeDumper;
+
+    $traverser = new NodeTraverser();
+
+    $traverser->addVisitor($visitor);
+
     $stmts = $parser->parse($code);
 
     $ast = $traverser->traverse($stmts);
-//    echo $dumper->dump($ast) . "\n";
-//    echo json_encode($stmts, JSON_PRETTY_PRINT), "\n";
+
     $prettyPrinter = new PrettyPrinter\Standard;
 
     file_put_contents($filePath, $prettyPrinter->prettyPrintFile($ast));
@@ -81,5 +85,3 @@ try {
     echo "Parse error: {$error->getMessage()}\n";
     return;
 }
-
-$dumper = new NodeDumper;
