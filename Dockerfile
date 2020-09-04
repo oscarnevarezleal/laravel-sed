@@ -53,7 +53,8 @@ RUN curl -s -o composer-setup.php https://getcomposer.org/installer \
     && mv php-cs-fixer /usr/local/bin/php-cs-fixer
 
 RUN cd $CLI_BIN_DIR/cli/php && \
-    composer install
+    composer install && \
+    ls -ltah $CLI_BIN_DIR/cli/php
 
 WORKDIR $CLI_BIN_DIR
 

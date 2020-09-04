@@ -14,7 +14,7 @@ use PhpParser\Node\Scalar\String_;
 use Laraboot\HelperExpressions;
 use PhpParser\{Node};
 
-class ChangeArrayValueVisitor extends NodeVisitorAbstract
+class AppendArrayValueVisitor extends NodeVisitorAbstract
 {
     private $options;
 

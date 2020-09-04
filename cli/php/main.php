@@ -38,9 +38,7 @@ if (getenv('CLI_BIN_DIR')) {
 echo 'APP_BASE_PATH=' . APP_BASE_PATH . "\n";
 
 require_once APP_BASE_PATH . '/vendor/autoload.php';
-require_once './vendor/autoload.php';
-
-//require_once dirname(__FILE__) . '/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 use PhpParser\{NodeDumper, NodeTraverser, PrettyPrinter};
 use PhpParser\ParserFactory;
@@ -48,7 +46,8 @@ use PhpParser\ParserFactory;
 print_r($options);
 
 $modifiers = [
-    'config.edit' => Laraboot\Visitor\ChangeArrayValueVisitor::class
+    'config.edit' => Laraboot\Visitor\ChangeArrayValueVisitor::class,
+    'config.append_array_value' => Laraboot\Visitor\AppendArrayValueVisitor::class
 ];
 
 $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
@@ -78,8 +77,12 @@ try {
     $ast = $traverser->traverse($stmts);
 
     $prettyPrinter = new PrettyPrinter\Standard;
+    
+    $print = $prettyPrinter->prettyPrintFile($ast);
 
-    file_put_contents($filePath, $prettyPrinter->prettyPrintFile($ast));
+    file_put_contents($filePath, $print);
+    
+    echo $print;
 
 } catch (Error $error) {
     echo "Parse error: {$error->getMessage()}\n";
