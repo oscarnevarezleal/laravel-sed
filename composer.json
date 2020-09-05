@@ -13,7 +13,6 @@
   "autoload": {
     "psr-4": {
       "Laraboot\\": "cli/php/src"
-      "Laraboot\\": "src"
     }
   },
   "extra": {

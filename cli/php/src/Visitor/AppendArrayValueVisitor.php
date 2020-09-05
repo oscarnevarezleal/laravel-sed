@@ -8,12 +8,16 @@
 
 namespace Laraboot\Visitor;
 
-use PhpParser\NodeVisitorAbstract;
-use PhpParser\Node\Expr\ArrayItem;
-use PhpParser\Node\Scalar\String_;
-use Laraboot\HelperExpressions;
 use PhpParser\{Node};
+use PhpParser\BuilderFactory;
+use PhpParser\Node\Expr\{Array_, ArrayItem};
+use PhpParser\Node\Scalar\String_;
+use PhpParser\NodeVisitorAbstract;
 
+/**
+ * Class AppendArrayValueVisitor
+ * @package Laraboot\Visitor
+ */
 class AppendArrayValueVisitor extends NodeVisitorAbstract
 {
     private $options;
@@ -33,22 +37,15 @@ class AppendArrayValueVisitor extends NodeVisitorAbstract
     public function leaveNode(Node $node)
     {
         if ($node instanceof ArrayItem) {
-
+            /**
+             * @var $node ArrayItem
+             */
             if ($node->key instanceof String_ && $node->key->value === $this->options['p']) {
-
-                if (array_key_exists('e', $this->options)) {
-                    // Return a function call expression
-                    // In the form of '$key' => env($env, $default);
-                    list($env, $default) = explode('|', $this->options['e']);
-                    HelperExpressions::envOrDefault($env, $default);
-                    return new ArrayItem(HelperExpressions::envOrDefault($env, $default), $node->key);
-                } else {
-                    // return a new Array item expression
-                    // we kep the same key but the value changed.
-                    return new ArrayItem(new String_($this->options['v']), $node->key);
+                if ($node->value instanceof Array_ && $node->value->items) {
+                    $builder = new BuilderFactory();
+                    $newItem = new ArrayItem($builder->classConstFetch($this->options['v'], 'class'));
+                    $node->value->items[] = $newItem;
                 }
-            } else {
-                return $node;
             }
         }
     }
