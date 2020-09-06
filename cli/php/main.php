@@ -13,6 +13,7 @@ error_reporting(E_ALL);
 $shortopts = "";
 $shortopts .= "a:"; // Required value
 $shortopts .= "p:"; // Required value
+$shortopts .= "k:"; // Required value
 $shortopts .= "e:"; // Required value
 $shortopts .= "v:"; // These options do not accept values
 $shortopts .= "d:";
@@ -20,6 +21,7 @@ $shortopts .= "d:";
 $longopts = array(
     "action:",  // Required value
     "path:",    // Required value
+    "key:",     // Required value
     "value:",   // Required value
     "envor::",  // Required value
     "directory",    // No value
@@ -47,7 +49,8 @@ print_r($options);
 
 $modifiers = [
     'config.edit' => Laraboot\Visitor\ChangeArrayValueVisitor::class,
-    'config.append_array_value' => Laraboot\Visitor\AppendArrayValueVisitor::class
+    'config.append_array_value' => Laraboot\Visitor\AppendArrayValueVisitor::class,
+    'config.append_array_class_assoc' => Laraboot\Visitor\AppendArrayItemClassAssociationVisitor::class
 ];
 
 $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);

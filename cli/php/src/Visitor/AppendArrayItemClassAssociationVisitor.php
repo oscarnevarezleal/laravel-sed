@@ -10,7 +10,7 @@ namespace Laraboot\Visitor;
 
 use PhpParser\{Node};
 use PhpParser\BuilderFactory;
-use PhpParser\Node\Expr\{Array_, ArrayItem};
+use PhpParser\Node\Expr\{Array_, ArrayItem, ArrayDimFetch};
 use PhpParser\Node\Scalar\String_;
 use PhpParser\NodeVisitorAbstract;
 
@@ -18,7 +18,7 @@ use PhpParser\NodeVisitorAbstract;
  * Class AppendArrayValueVisitor
  * @package Laraboot\Visitor
  */
-class AppendArrayValueVisitor extends NodeVisitorAbstract
+class AppendArrayItemClassAssociationVisitor extends NodeVisitorAbstract
 {
     private $options;
 
@@ -46,7 +46,8 @@ class AppendArrayValueVisitor extends NodeVisitorAbstract
              */
             if ($this->hasKeyName($node, $this->options['p'])) {
                 if ($node->value instanceof Array_ && $node->value->items) {
-                    $newItem = new ArrayItem($this->builder->classConstFetch($this->options['v'], 'class'));
+                    $newItem = new ArrayItem($this->builder->classConstFetch($this->options['v'], 'class')
+                        , $this->builder->val($this->options['k']));
                     $node->value->items[] = $newItem;
                 }
             }
