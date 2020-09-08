@@ -39,7 +39,7 @@ class EditConfigFileCommand extends EditCommand
         $pathDef = $this->getPathDefinition($pathValue);
 
         $basePathOption = $input->getOption('basePath');
-        $basePath = $basePathOption ?? $this->getRootDirectory();
+        $basePath = $basePathOption ?? $this->getAppDirectory();
 
         $filename = sprintf('%s/%s.php', $basePath, $pathDef->getFileName());
 
