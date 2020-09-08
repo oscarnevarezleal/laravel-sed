@@ -2,14 +2,14 @@
 
 namespace Laraboot\Commands;
 
-use Laraboot\Visitor\AppendArrayItemsVisitor;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Laraboot\Console\CliInputDefinition;
 use Laraboot\EditCommand;
 use Laraboot\FileVistorsTransformer;
 use Laraboot\TopLevelInputConfig;
+use Laraboot\Visitor\AppendArrayItemsVisitor;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use function dirname;
 use function getcwd;
 use function sprintf;

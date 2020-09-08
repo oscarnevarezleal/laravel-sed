@@ -2,10 +2,16 @@
 
 namespace Laraboot\Console\Commands;
 
+use Illuminate\Console\Concerns;
+use Illuminate\Support\Traits\Macroable;
 use Laraboot\Commands\EditConfigFileCommand;
 
 class ConfigEditCommand extends EditConfigFileCommand
 {
+    use Concerns\HasParameters,
+        Concerns\InteractsWithIO,
+        Macroable;
+
     /**
      * The Laravel application instance.
      *
