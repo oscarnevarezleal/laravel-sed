@@ -63,36 +63,4 @@ class GenerateConfigFile extends EditCommand
         return Command::SUCCESS;
     }
 
-    /**
-     * @param array|null $values
-     * @return array
-     */
-    protected function getEnvOrDefaultExps(?array $values): array
-    {
-        return array_map(function ($el) {
-            $orEnv = null;
-            list($key, $value) = explode('=', $el);
-//            echo $value . "\n";
-            if (stripos($value, '|') !== FALSE) {
-                $sub = explode('|', $value);
-                $count = count($sub);
-                if ($count > 1) {
-                    // we have a list of envs
-                    $orEnv = array_splice($sub, 0, $count - 1);
-//                    print_r($orEnv);
-                    $value = array_pop($sub);
-//                    print_r($value);
-                } else {
-                    $orEnv = $sub[0];
-                    $value = $sub[1];
-                }
-            }
-            return new EnvOrDefaultExp([
-                'key' => $key,
-                'value' => $value,
-                'orenv' => $orEnv
-            ]);
-        }, $values);
-    }
-
 }
