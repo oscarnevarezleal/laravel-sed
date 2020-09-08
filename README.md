@@ -1,8 +1,10 @@
 # Laravel SED  
+
 This is a CLI utility that helps in the aid of replacing values or expressions in laravel config files.
 
-> **Note:**  Not every possible edit is possible right now.
+> **Note:**  Not every possible edit is possible right now mainly nested properties such as `database.connections.mysql.*` or `filesystems.disks.local.driver.*`
   
+> **Note:**  This project is primarily intended as CLI tool to manage laravel applications from the outside, although it contains several laravel commands expect that the mayority of features will be unavailable as Laravel commands.
 
 ## Getting started
 
@@ -46,6 +48,7 @@ larased -a config.append_array_class_assoc -p aliases -v App\CustomProvider -k M
 |config.edit | Replace literal value in configuration            |`config.php/`_`timezone`_|
 |config.append_array_value | Adds a new array item to the array  |`config.php/`_`providers`_|
 |config.append_array_class_assoc | Adds a new array association to the array  |`config.php/`_`aliases`_|
+|config-gen globals | Generates a config file from arguments
 
 
 
