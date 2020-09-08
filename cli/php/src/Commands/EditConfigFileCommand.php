@@ -7,10 +7,8 @@ use Laraboot\EditCommand;
 use Laraboot\FileVistorsTransformer;
 use Laraboot\TopLevelInputConfig;
 use Laraboot\Visitor\AppendArrayItemsVisitor;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use function dirname;
 use function getcwd;
 use function sprintf;
 
@@ -41,9 +39,9 @@ class EditConfigFileCommand extends EditCommand
         $pathDef = $this->getPathDefinition($pathValue);
 
         $basePathOption = $input->getOption('basePath');
-        $basePath = $basePathOption ? ($basePathOption . '/') : $this->getRootDirectory();
+        $basePath = $basePathOption ?? $this->getRootDirectory();
 
-        $filename = sprintf('%s%s.php', $basePath, $pathDef->getFileName());
+        $filename = sprintf('%s/%s.php', $basePath, $pathDef->getFileName());
 
         $visitorContext = $this->getVisitorContext($input, $pathDef);
 
@@ -63,7 +61,8 @@ class EditConfigFileCommand extends EditCommand
 
         // return this if there was no problem running the command
         // (it's equivalent to returning int(0))
-        return Command::SUCCESS;
+//        return Command::SUCCESS;
+        return 0;
 
         // or return this if some error happened during the execution
         // (it's equivalent to returning int(1))
@@ -78,11 +77,6 @@ class EditConfigFileCommand extends EditCommand
         return [
             AppendArrayItemsVisitor::class
         ];
-    }
-
-    public function getRootDirectory()
-    {
-        return dirname(dirname(__FILE__) . '/../../');
     }
 
 }
