@@ -63,7 +63,7 @@ class AppendArrayItemsVisitor extends NodeVisitorAbstract
             /**
              * @var $node Array_
              */
-            return new Array_($items);
+            return new Array_([...$items, $node]);
 
         } else {
             return $node;

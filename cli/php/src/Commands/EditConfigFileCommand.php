@@ -7,8 +7,10 @@ use Laraboot\EditCommand;
 use Laraboot\FileVistorsTransformer;
 use Laraboot\TopLevelInputConfig;
 use Laraboot\Visitor\AppendArrayItemsVisitor;
+use Laraboot\Visitor\ChangeArrayValueVisitor;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use function file_put_contents;
 use function getcwd;
 use function sprintf;
 
@@ -54,6 +56,8 @@ class EditConfigFileCommand extends EditCommand
         $transformed = $transformer->transform();
         $output->writeln($transformed);
 
+        file_put_contents($filename, $transformed);
+
         // ... put here the code to run in your command
 
         // this method must return an integer number with the "exit status code"
@@ -75,6 +79,7 @@ class EditConfigFileCommand extends EditCommand
     protected function getVisitors(): array
     {
         return [
+            ChangeArrayValueVisitor::class,
             AppendArrayItemsVisitor::class
         ];
     }
