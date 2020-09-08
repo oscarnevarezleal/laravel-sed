@@ -3,7 +3,7 @@
 namespace Laraboot\Commands;
 
 use Laraboot\EditCommand;
-use Laraboot\Presets\Cloudify;
+use Laraboot\Exp\EnvOrDefaultExp;
 use Laraboot\TopLevelInputConfig;
 use Laraboot\Utils\ConfigFileDumper;
 use Symfony\Component\Console\Command\Command;
@@ -11,11 +11,11 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use function array_keys;
 use function array_map;
+use function array_pop;
+use function array_splice;
+use function count;
 use function explode;
-use function print_r;
-use function sprintf;
 use function stripos;
 
 /**
@@ -47,18 +47,10 @@ class GenerateConfigFile extends EditCommand
         $context = $this->getVisitorContext($input);
         $values = $input->getOption('values');
 
-        $kValues = array_map(function ($el) {
-            $orEnv = null;
-            list($key, $value) = explode('=', $el);
-            if (stripos($value, '|') !== FALSE) {
-                $sub = explode('|', $value);
-                $orEnv = $sub[0];
-                $value = $sub[1];
-            }
-            return ['key' => $key, 'value' => $value, 'orenv' => $orEnv];
-        }, $values);
+        $kValues = $this->getEnvOrDefaultExps($values);
 
         $context->setContext($kValues);
+
         /**
          * @var $preset
          */
@@ -69,6 +61,38 @@ class GenerateConfigFile extends EditCommand
         echo $outputCode;
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * @param array|null $values
+     * @return array
+     */
+    protected function getEnvOrDefaultExps(?array $values): array
+    {
+        return array_map(function ($el) {
+            $orEnv = null;
+            list($key, $value) = explode('=', $el);
+//            echo $value . "\n";
+            if (stripos($value, '|') !== FALSE) {
+                $sub = explode('|', $value);
+                $count = count($sub);
+                if ($count > 1) {
+                    // we have a list of envs
+                    $orEnv = array_splice($sub, 0, $count - 1);
+//                    print_r($orEnv);
+                    $value = array_pop($sub);
+//                    print_r($value);
+                } else {
+                    $orEnv = $sub[0];
+                    $value = $sub[1];
+                }
+            }
+            return new EnvOrDefaultExp([
+                'key' => $key,
+                'value' => $value,
+                'orenv' => $orEnv
+            ]);
+        }, $values);
     }
 
 }

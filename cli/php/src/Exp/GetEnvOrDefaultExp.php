@@ -31,19 +31,20 @@ class GetEnvOrDefaultExp
      * @param array $envs
      * @param string $defaultValue
      */
-    public static function chainOfEnvCallsWithDefault(string $key, array $envs, string $defaultValue)
+    public static function chainOfEnvCallsWithDefault(string $key, array $envs, string $default)
     {
         // We build inside out
-        return self::getRecursion($envs);
+        return self::getRecursion($envs, $default);
     }
 
     /**
      * @param array $envs
+     * @param string $default
      * @param string|null $key
      * @param null $carry
      * @return \PhpParser\Node\Expr\FuncCall|null
      */
-    private static function getRecursion(array $envs, string $key = null, $carry = null)
+    private static function getRecursion(array $envs, string $default, string $key = null, $carry = null)
     {
 
         $factory = new BuilderFactory();
@@ -56,8 +57,8 @@ class GetEnvOrDefaultExp
             while ($current = array_pop($envs)) {
 
                 $recursion = $recursion ?
-                    self::getRecursion($envs, $current, $recursion) :
-                    $factory->funcCall('env', [$current]);
+                    self::getRecursion($envs, $default, $current, $recursion) :
+                    $factory->funcCall('env', [$current, $default]);
 
             }
 

@@ -2,15 +2,14 @@
 
 namespace Laraboot\Visitor;
 
-use Illuminate\Support\Arr;
+use Laraboot\Exp\EnvOrDefaultExp;
+use Laraboot\Exp\GetEnvOrDefaultExp;
 use Laraboot\Schema\VisitorContext;
 use Laraboot\Utils\HelperExpressions;
 use PhpParser\{Node};
 use PhpParser\Node\Expr\{Array_, ArrayItem};
 use PhpParser\NodeVisitorAbstract;
-use function collect;
 use function get_class;
-use function is_string;
 use function print_r;
 use function strtoupper;
 
@@ -50,17 +49,16 @@ class AppendArrayItemsVisitor extends NodeVisitorAbstract
         if ($node instanceof Array_) {
 
             $items = [];
-            
+
             foreach ($this->context->getContext() as $k => $v) {
-                $key = $v['key'];
-                $default = $v['value'];
-                $orEnv = $v['orenv'];
-                if (is_string($key)) {
-                    $upperKey = strtoupper($key);
+
+                if ($v instanceof EnvOrDefaultExp) {
+                    $attrs = $v->getAttributes();
                     $items[] = new ArrayItem(
-                        HelperExpressions::envOrDefault($orEnv ?? $upperKey, $default)
-                        , new Node\Scalar\String_($key));
+                        GetEnvOrDefaultExp::chainOfEnvCallsWithDefault($attrs['key'], $attrs['orenv'], $attrs['value'])
+                        , new Node\Scalar\String_($attrs['key']));
                 }
+
             }
             /**
              * @var $node Array_
