@@ -6,7 +6,7 @@
  * Time: 2:44 PM
  */
 
-namespace Laraboot;
+namespace Laraboot\Utils;
 
 use PhpParser\{BuilderFactory, Node};
 
@@ -19,7 +19,7 @@ class HelperExpressions
      * @param string $default
      * @return Node\Expr\FuncCall
      */
-    public static function envOrDefault(string $env, string $default)
+    public static function envOrDefault(string $env, string $default): Node\Expr\FuncCall
     {
         $factory = new BuilderFactory();
         return $factory->funcCall('env', [$env, $default]);

@@ -48,7 +48,7 @@ use PhpParser\ParserFactory;
 print_r($options);
 
 $modifiers = [
-    'config.edit' => Laraboot\Visitor\ChangeArrayValueVisitor::class,
+    'config.edit' => Laraboot\Visitor\AppendArrayItemsVisitor::class,
     'config.append_array_value' => Laraboot\Visitor\AppendArrayValueVisitor::class,
     'config.append_array_class_assoc' => Laraboot\Visitor\AppendArrayItemClassAssociationVisitor::class
 ];

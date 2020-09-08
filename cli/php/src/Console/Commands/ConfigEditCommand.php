@@ -23,16 +23,6 @@ class ConfigEditCommand extends Command
      */
     protected $description = 'Edit a configuration value and persist the result in file';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     protected function getOptions()
     {
         return [

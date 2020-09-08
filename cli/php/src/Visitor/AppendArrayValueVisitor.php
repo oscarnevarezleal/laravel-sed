@@ -28,13 +28,13 @@ class AppendArrayValueVisitor extends NodeVisitorAbstract
      * AppendArrayValueVisitor constructor.
      * @param array $options
      */
-    public function __construct(array $options)
+    public function __construct(array $options) 
     {
         $this->options = $options;
         $this->builder = new BuilderFactory();
     }
 
-    /**
+    /**t
      * @param Node $node
      * @return int|Node|Node[]|void|null
      */
