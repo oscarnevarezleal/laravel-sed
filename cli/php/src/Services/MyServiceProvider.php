@@ -6,7 +6,7 @@
  * Time: 8:28 PM
  */
 
-namespace Laraboot;
+namespace Laraboot\Services;
 
 use Illuminate\Support\ServiceProvider;
 use Laraboot\Console\Commands\ConfigEditCommand;
