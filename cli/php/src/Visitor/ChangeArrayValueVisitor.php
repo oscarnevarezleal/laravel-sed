@@ -8,22 +8,38 @@
 
 namespace Laraboot\Visitor;
 
-use PhpParser\NodeVisitorAbstract;
+use Laraboot\Schema\VisitorContext;
+use Laraboot\Utils\HelperExpressions;
+use PhpParser\{Node};
 use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Scalar\String_;
-use Laraboot\HelperExpressions;
-use PhpParser\{Node};
+use PhpParser\NodeVisitorAbstract;
 
+
+/**
+ * Class ChangeArrayValueVisitor
+ * @package Laraboot\Visitor
+ */
 class ChangeArrayValueVisitor extends NodeVisitorAbstract
 {
-    private $options;
+    private VisitorContext $VisitorContext;
 
     /**
      * ChangeArrayValueVisitor constructor.
+     * @param VisitorContext $VisitorContext
      */
-    public function __construct(array $options)
+    public function __construct(VisitorContext $VisitorContext)
     {
-        $this->options = $options;
+        $this->VisitorContext = $VisitorContext;
+    }
+
+    /**
+     * @param array $options
+     * @return AppendArrayItemsVisitor
+     */
+    public function fromArray(array $options)
+    {
+        return new self(VisitorContext::fromArray($options));
     }
 
     /**
@@ -32,20 +48,24 @@ class ChangeArrayValueVisitor extends NodeVisitorAbstract
      */
     public function leaveNode(Node $node)
     {
+        $context = $this->VisitorContext->getContext();
+        $searchKey = $context[VisitorContext::PATH_KEY];
+        $replaceValue = $context[VisitorContext::VALUE_KEY];
+
         if ($node instanceof ArrayItem) {
 
-            if ($node->key instanceof String_ && $node->key->value === $this->options['p']) {
+            if ($node->key instanceof String_ && $node->key->value === $searchKey) {
 
-                if ($this->options['e']) {
+                if (isset($context[VisitorContext::ENV_OR_KEY])) {
                     // Return a function call expression
                     // In the form of '$key' => env($env, $default);
-                    list($env, $default) = explode('|', $this->options['e']);
+                    list($env, $default) = explode('|', $context[VisitorContext::ENV_OR_KEY]);
                     HelperExpressions::envOrDefault($env, $default);
                     return new ArrayItem(HelperExpressions::envOrDefault($env, $default), $node->key);
                 } else {
                     // return a new Array item expression
                     // we kep the same key but the value changed.
-                    return new ArrayItem(new String_($this->options['v']), $node->key);
+                    return new ArrayItem(new String_($replaceValue), $node->key);
                 }
             } else {
                 return $node;

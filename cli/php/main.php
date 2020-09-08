@@ -13,6 +13,7 @@ error_reporting(E_ALL);
 $shortopts = "";
 $shortopts .= "a:"; // Required value
 $shortopts .= "p:"; // Required value
+$shortopts .= "k:"; // Required value
 $shortopts .= "e:"; // Required value
 $shortopts .= "v:"; // These options do not accept values
 $shortopts .= "d:";
@@ -20,6 +21,7 @@ $shortopts .= "d:";
 $longopts = array(
     "action:",  // Required value
     "path:",    // Required value
+    "key:",     // Required value
     "value:",   // Required value
     "envor::",  // Required value
     "directory",    // No value
@@ -38,9 +40,7 @@ if (getenv('CLI_BIN_DIR')) {
 echo 'APP_BASE_PATH=' . APP_BASE_PATH . "\n";
 
 require_once APP_BASE_PATH . '/vendor/autoload.php';
-require_once './vendor/autoload.php';
-
-//require_once dirname(__FILE__) . '/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 use PhpParser\{NodeDumper, NodeTraverser, PrettyPrinter};
 use PhpParser\ParserFactory;
@@ -48,7 +48,9 @@ use PhpParser\ParserFactory;
 print_r($options);
 
 $modifiers = [
-    'config.edit' => Laraboot\Visitor\ChangeArrayValueVisitor::class
+    'config.edit' => Laraboot\Visitor\AppendArrayItemsVisitor::class,
+    'config.append_array_value' => Laraboot\Visitor\AppendArrayValueVisitor::class,
+    'config.append_array_class_assoc' => Laraboot\Visitor\AppendArrayItemClassAssociationVisitor::class
 ];
 
 $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
@@ -78,8 +80,12 @@ try {
     $ast = $traverser->traverse($stmts);
 
     $prettyPrinter = new PrettyPrinter\Standard;
+    
+    $print = $prettyPrinter->prettyPrintFile($ast);
 
-    file_put_contents($filePath, $prettyPrinter->prettyPrintFile($ast));
+    file_put_contents($filePath, $print);
+    
+    echo $print;
 
 } catch (Error $error) {
     echo "Parse error: {$error->getMessage()}\n";
