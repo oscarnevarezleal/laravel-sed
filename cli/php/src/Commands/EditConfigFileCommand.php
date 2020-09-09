@@ -49,13 +49,15 @@ class EditConfigFileCommand extends EditCommand
 
         $transformer = new FileVistorsTransformer($filename, $this->getVisitors(), $visitorContext);
 
-        $output->writeln(sprintf('Running command from %s', getcwd()));
-        $output->writeln(sprintf('Editing %s file', $pathDef->getFileName()));
-        $output->writeln(sprintf('Property path %s will be substituted', $pathDef->getPropertyPath()));
+        if ($output->isVerbose()) {
+            $output->writeln(sprintf('Running command from %s', getcwd()));
+            $output->writeln(sprintf('Editing %s file', $pathDef->getFileName()));
+            $output->writeln(sprintf('Property path %s will be substituted', $pathDef->getPropertyPath()));
+        }
 
         $transformed = $transformer->transform();
 
-        if ($output->isVerbose()) {
+        if ($output->isDebug()) {
             $output->writeln($transformed);
         }
 
