@@ -54,23 +54,14 @@ class EditConfigFileCommand extends EditCommand
         $output->writeln(sprintf('Property path %s will be substituted', $pathDef->getPropertyPath()));
 
         $transformed = $transformer->transform();
-        $output->writeln($transformed);
+
+        if ($output->isVerbose()) {
+            $output->writeln($transformed);
+        }
 
         file_put_contents($filename, $transformed);
 
-        // ... put here the code to run in your command
-
-        // this method must return an integer number with the "exit status code"
-        // of the command. You can also use these constants to make code more readable
-
-        // return this if there was no problem running the command
-        // (it's equivalent to returning int(0))
-//        return Command::SUCCESS;
         return 0;
-
-        // or return this if some error happened during the execution
-        // (it's equivalent to returning int(1))
-        // return Command::FAILURE;
     }
 
     /**
