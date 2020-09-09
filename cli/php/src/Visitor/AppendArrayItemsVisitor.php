@@ -48,7 +48,7 @@ class AppendArrayItemsVisitor extends NodeVisitorAbstract
     {
         if ($node instanceof Array_) {
 
-            $items = [];
+            $items = $node->items ?? [];
 
             foreach ($this->context->getContext() as $k => $v) {
 
@@ -60,10 +60,9 @@ class AppendArrayItemsVisitor extends NodeVisitorAbstract
                 }
 
             }
-            /**
-             * @var $node Array_
-             */
-            return new Array_([...$items, $node]);
+
+            $node->items = $items;
+            return $node;
 
         } else {
             return $node;
