@@ -4,7 +4,7 @@ namespace Laraboot\Exp;
 
 use Laraboot\Utils\HelperExpressions;
 use PhpParser\BuilderFactory;
-use PhpParser\Node\Expr\{ArrayItem};
+use PhpParser\Node\Expr\{ArrayItem, FuncCall};
 use PhpParser\Node\Scalar\{String_};
 use function array_pop;
 
@@ -33,6 +33,8 @@ class GetEnvOrDefaultExp
      */
     public static function chainOfEnvCallsWithDefault(string $key, array $envs, string $default)
     {
+        // @todo refactor
+        unset($key);
         // We build inside out
         return self::getRecursion($envs, $default);
     }
@@ -42,7 +44,7 @@ class GetEnvOrDefaultExp
      * @param string $default
      * @param string|null $key
      * @param null $carry
-     * @return \PhpParser\Node\Expr\FuncCall|null
+     * @return FuncCall|null
      */
     private static function getRecursion(array $envs, string $default, string $key = null, $carry = null)
     {
@@ -56,7 +58,7 @@ class GetEnvOrDefaultExp
 
             while ($current = array_pop($envs)) {
 
-                $recursion = $recursion ?
+                $recursion = $recursion !== null ?
                     self::getRecursion($envs, $default, $current, $recursion) :
                     $factory->funcCall('env', [$current, $default]);
 

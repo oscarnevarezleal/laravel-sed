@@ -3,12 +3,11 @@
 namespace Laraboot;
 
 use Laraboot\Exp\EnvOrDefaultExp;
+use Laraboot\Schema\PathDefinition;
 use Laraboot\Schema\VisitorContext;
 use Symfony\Component\Console\Command\Command;
-use Laraboot\Schema\PathDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use function array_merge;
-use function dirname;
 
 class EditCommand extends Command
 {
@@ -32,7 +31,7 @@ class EditCommand extends Command
     {
         $inputContext = array_merge($input->getArguments(), $input->getOptions());
 
-        if ($pathDef) {
+        if ($pathDef !== null) {
             $inputContext = array_merge($inputContext, $pathDef->asArray());
         }
 

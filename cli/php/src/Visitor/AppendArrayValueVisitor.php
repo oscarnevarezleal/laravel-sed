@@ -28,7 +28,7 @@ class AppendArrayValueVisitor extends NodeVisitorAbstract
      * AppendArrayValueVisitor constructor.
      * @param array $options
      */
-    public function __construct(array $options) 
+    public function __construct(array $options)
     {
         $this->options = $options;
         $this->builder = new BuilderFactory();
@@ -40,15 +40,13 @@ class AppendArrayValueVisitor extends NodeVisitorAbstract
      */
     public function leaveNode(Node $node)
     {
-        if ($node instanceof ArrayItem) {
-            /**
-             * @var $node ArrayItem
-             */
-            if ($this->hasKeyName($node, $this->options['p'])) {
-                if ($node->value instanceof Array_ && $node->value->items) {
-                    $newItem = new ArrayItem($this->builder->classConstFetch($this->options['v'], 'class'));
-                    $node->value->items[] = $newItem;
-                }
+        /**
+         * @var $node ArrayItem
+         */
+        if ($node instanceof ArrayItem && $this->hasKeyName($node, $this->options['p'])) {
+            if ($node->value instanceof Array_ && $node->value->items) {
+                $newItem = new ArrayItem($this->builder->classConstFetch($this->options['v'], 'class'));
+                $node->value->items[] = $newItem;
             }
         }
     }
