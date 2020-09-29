@@ -2,19 +2,53 @@
 
 namespace Laraboot\Console\Commands;
 
-use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Process\Process;
+use Illuminate\Console\Concerns;
+use Laraboot\Commands\EditConfigFileCommand;
 
-class ConfigEditCommand extends Command
+class ConfigEditCommand extends EditConfigFileCommand
 {
+    /**
+     * The Laravel application instance.
+     *
+     * @var \Illuminate\Contracts\Foundation\Application
+     */
+    protected $laravel;
+
+    /**
+     * The console command name.
+     *
+     * @var string
+     */
+    protected $name = 'larased:config-edit';
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * The console command help text.
+     *
+     * @var string|null
+     */
+    protected $help;
+
+    /**
+     * Indicates whether the command should be shown in the Artisan command list.
+     *
+     * @var bool
+     */
+    protected $hidden = false;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'config:edit {path} {key} {value}';
+    protected $signature = 'larased:config-edit {path} {value}';
 
     /**
      * The console command description.
@@ -23,47 +57,19 @@ class ConfigEditCommand extends Command
      */
     protected $description = 'Edit a configuration value and persist the result in file';
 
+    /**
+     * @return \Symfony\Component\Console\Input\InputOption[]
+     */
     protected function getOptions()
     {
-        return [
-            ['env', InputOption::VALUE_OPTIONAL, 'the key to modify e.g `asset_url` .']
-        ];
+        return $this->getDefinition()->getOptions();
     }
-
-    protected function getArguments()
-    {
-        return [
-            ['key', InputArgument::REQUIRED, 'the key to modify e.g `asset_url` .'],
-            ['path', InputArgument::REQUIRED, 'The path to edith e.g config.app = config/app.php'],
-            ['value', InputArgument::REQUIRED, 'the new value'],
-        ];
-    }
-
 
     /**
-     * Execute the console command.
-     *
-     * @return int
+     * @return \Symfony\Component\Console\Input\InputArgument[]
      */
-    public function handle()
+    protected function getArguments()
     {
-        $binPath = base_path() . '/vendor/oscarnevarezleal/laravel-sed/cli/php/main.php';
-        $commandStr = sprintf('php %s -a config.edit -p %s -v %s -d %s',
-            $binPath,
-            $this->argument('key'),
-            $this->argument('value'),
-            base_path());
-
-        if ($this->hasOption('env')) {
-            $orValue = sprintf('%s|%s', $this->option('env'), $this->argument('value'));
-            $commandStr .= sprintf(' -e %s', $orValue);
-        }
-
-        $command = explode(' ', $commandStr);
-        $process = new Process($command);
-        $process->run();
-
-        echo $process->getOutput();
-        return $process->getExitCode();
+        return $this->getDefinition()->getArguments();
     }
 }

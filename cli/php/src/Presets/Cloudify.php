@@ -28,12 +28,9 @@ class Cloudify extends PresetBase
         echo 'executing';
 
         foreach ($this->getVisitors() as $visitor) {
-            /** @var IPreset $visitor */
             $v = new $visitor();
-            if ($v instanceof IPreset && ([$v, 'setContext'])) {
-                $v->setContext($this->getContext());
-                $v->execute();
-            }
+            $v->setContext($this->getContext());
+            $v->execute();
         }
     }
 

@@ -3,11 +3,14 @@
 namespace Laraboot;
 
 use Laraboot\Exp\EnvOrDefaultExp;
-use Laraboot\Schema\PathDefinition;
 use Laraboot\Schema\VisitorContext;
 use Symfony\Component\Console\Command\Command;
+use Laraboot\Schema\PathDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use function array_merge;
+use function dir;
+use function dirname;
+use function function_exists;
 
 class EditCommand extends Command
 {
@@ -31,7 +34,7 @@ class EditCommand extends Command
     {
         $inputContext = array_merge($input->getArguments(), $input->getOptions());
 
-        if ($pathDef !== null) {
+        if ($pathDef) {
             $inputContext = array_merge($inputContext, $pathDef->asArray());
         }
 
@@ -68,5 +71,13 @@ class EditCommand extends Command
                 'orenv' => $orEnv
             ]);
         }, $values);
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppDirectory(){
+        return function_exists('base_path') ?
+            base_path() : dirname(__DIR__);
     }
 }

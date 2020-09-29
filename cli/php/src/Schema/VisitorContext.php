@@ -3,6 +3,7 @@
 
 namespace Laraboot\Schema;
 
+use Laraboot\Schema\PathDefinition;
 use Laraboot\TopLevelInputConfig;
 
 class VisitorContext
@@ -25,7 +26,7 @@ class VisitorContext
         return $this->pathDefinition;
     }
 
-    private $context = [];
+    private array $context;
 
     /**
      * @param array $context
@@ -52,15 +53,6 @@ class VisitorContext
     {
         $this->pathDefinition = $pathDefinition;
         $this->context = $context;
-    }
-
-    /**
-     * @param array $a
-     * @return VisitorContext
-     */
-    public static function fromArray(array $a = [])
-    {
-        return new self(null, $a);
     }
 
 }

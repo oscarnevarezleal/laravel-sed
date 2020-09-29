@@ -2,15 +2,15 @@
 
 namespace Laraboot\Commands;
 
-use Laraboot\Visitor\AppendArrayItemsVisitor;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Laraboot\Console\CliInputDefinition;
 use Laraboot\EditCommand;
 use Laraboot\FileVistorsTransformer;
 use Laraboot\TopLevelInputConfig;
-use function dirname;
+use Laraboot\Visitor\AppendArrayItemsVisitor;
+use Laraboot\Visitor\ChangeArrayValueVisitor;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use function file_put_contents;
 use function getcwd;
 use function sprintf;
 
@@ -41,33 +41,29 @@ class EditConfigFileCommand extends EditCommand
         $pathDef = $this->getPathDefinition($pathValue);
 
         $basePathOption = $input->getOption('basePath');
-        $basePath = $basePathOption ? ($basePathOption . '/') : $this->getRootDirectory();
+        $basePath = $basePathOption ?? $this->getAppDirectory();
 
-        $filename = sprintf('%s%s.php', $basePath, $pathDef->getFileName());
+        $filename = sprintf('%s/%s.php', $basePath, $pathDef->getFileName());
 
         $visitorContext = $this->getVisitorContext($input, $pathDef);
 
         $transformer = new FileVistorsTransformer($filename, $this->getVisitors(), $visitorContext);
 
-        $output->writeln(sprintf('Running command from %s', getcwd()));
-        $output->writeln(sprintf('Editing %s file', $pathDef->getFileName()));
-        $output->writeln(sprintf('Property path %s will be substituted', $pathDef->getPropertyPath()));
+        if ($output->isVerbose()) {
+            $output->writeln(sprintf('Running command from %s', getcwd()));
+            $output->writeln(sprintf('Editing %s file', $pathDef->getFileName()));
+            $output->writeln(sprintf('Property path %s will be substituted', $pathDef->getPropertyPath()));
+        }
 
         $transformed = $transformer->transform();
-        $output->writeln($transformed);
 
-        // ... put here the code to run in your command
+        if ($output->isDebug()) {
+            $output->writeln($transformed);
+        }
 
-        // this method must return an integer number with the "exit status code"
-        // of the command. You can also use these constants to make code more readable
+        file_put_contents($filename, $transformed);
 
-        // return this if there was no problem running the command
-        // (it's equivalent to returning int(0))
-        return Command::SUCCESS;
-
-        // or return this if some error happened during the execution
-        // (it's equivalent to returning int(1))
-        // return Command::FAILURE;
+        return 0;
     }
 
     /**
@@ -76,13 +72,9 @@ class EditConfigFileCommand extends EditCommand
     protected function getVisitors(): array
     {
         return [
+            ChangeArrayValueVisitor::class,
             AppendArrayItemsVisitor::class
         ];
-    }
-
-    public function getRootDirectory()
-    {
-        return dirname(dirname(__FILE__) . '/../../');
     }
 
 }

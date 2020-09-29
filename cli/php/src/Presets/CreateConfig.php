@@ -18,13 +18,4 @@ class CreateConfig implements IPreset
         return [];
     }
 
-    function setContext($context)
-    {
-        // TODO: Implement setContext() method.
-    }
-
-    function execute()
-    {
-        // TODO: Implement execute() method.
-    }
 }

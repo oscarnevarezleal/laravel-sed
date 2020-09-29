@@ -8,7 +8,6 @@
 
 namespace Laraboot\Utils;
 
-use PhpParser\Node\Expr\FuncCall;
 use PhpParser\{BuilderFactory, Node};
 
 
@@ -20,7 +19,7 @@ class HelperExpressions
      * @param string $default
      * @return Node\Expr\FuncCall
      */
-    public static function envOrDefault(string $env, string $default): FuncCall
+    public static function envOrDefault(string $env, string $default): Node\Expr\FuncCall
     {
         $factory = new BuilderFactory();
         return $factory->funcCall('env', [$env, $default]);

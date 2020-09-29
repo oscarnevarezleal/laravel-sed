@@ -7,6 +7,7 @@ use Laraboot\TopLevelInputConfig;
 use function array_pop;
 use function array_walk;
 use function explode;
+use function join;
 
 class PathDefinition
 {
@@ -104,7 +105,7 @@ class PathDefinition
         array_walk($tokens, function ($token) {
             return $token;
         });
-        return implode('/', $tokens);
+        return join('/', $tokens);
     }
 
     /**
