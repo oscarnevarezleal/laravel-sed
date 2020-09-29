@@ -10,7 +10,6 @@ use function array_pop;
 
 class GetEnvOrDefaultExp
 {
-
     /**
      * Returns `[ $key => env($envName, $defaultValue) ]`
      * @param string $key
@@ -20,9 +19,7 @@ class GetEnvOrDefaultExp
      */
     public static function asArrayItem(string $key, string $envName, string $defaultValue): ArrayItem
     {
-        return new ArrayItem(
-            HelperExpressions::envOrDefault($envName, $defaultValue)
-            , new String_($key));
+        return new ArrayItem(HelperExpressions::envOrDefault($envName, $defaultValue), new String_($key));
     }
 
     /**
@@ -33,6 +30,8 @@ class GetEnvOrDefaultExp
      */
     public static function chainOfEnvCallsWithDefault(string $key, array $envs, string $default)
     {
+        // todo
+        unset($key);
         // We build inside out
         return self::getRecursion($envs, $default);
     }
@@ -46,24 +45,14 @@ class GetEnvOrDefaultExp
      */
     private static function getRecursion(array $envs, string $default, string $key = null, $carry = null)
     {
-
         $factory = new BuilderFactory();
-
         if (!$carry) {
-
             $current = null;
             $recursion = null;
-
             while ($current = array_pop($envs)) {
-
-                $recursion = $recursion ?
-                    self::getRecursion($envs, $default, $current, $recursion) :
-                    $factory->funcCall('env', [$current, $default]);
-
+                $recursion = $recursion !== null ? self::getRecursion($envs, $default, $current, $recursion) : $factory->funcCall('env', [$current, $default]);
             }
-
             return $recursion;
-
         } else {
             return $factory->funcCall('env', [$key, $carry]);
         }

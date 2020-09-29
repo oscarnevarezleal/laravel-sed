@@ -10,7 +10,7 @@ namespace Laraboot\Visitor;
 
 use PhpParser\{Node};
 use PhpParser\BuilderFactory;
-use PhpParser\Node\Expr\{Array_, ArrayItem, ArrayDimFetch};
+use PhpParser\Node\Expr\{Array_, ArrayItem};
 use PhpParser\Node\Scalar\String_;
 use PhpParser\NodeVisitorAbstract;
 
@@ -21,7 +21,6 @@ use PhpParser\NodeVisitorAbstract;
 class AppendArrayItemClassAssociationVisitor extends NodeVisitorAbstract
 {
     private $options;
-
     private $builder;
 
     /**
@@ -40,17 +39,9 @@ class AppendArrayItemClassAssociationVisitor extends NodeVisitorAbstract
      */
     public function leaveNode(Node $node)
     {
-        if ($node instanceof ArrayItem) {
-            /**
-             * @var $node ArrayItem
-             */
-            if ($this->hasKeyName($node, $this->options['p'])) {
-                if ($node->value instanceof Array_ && $node->value->items) {
-                    $newItem = new ArrayItem($this->builder->classConstFetch($this->options['v'], 'class')
-                        , $this->builder->val($this->options['k']));
-                    $node->value->items[] = $newItem;
-                }
-            }
+        if ($node instanceof ArrayItem && $this->hasKeyName($node, $this->options['p']) && ($node->value instanceof Array_ && $node->value->items)) {
+            $newItem = new ArrayItem($this->builder->classConstFetch($this->options['v'], 'class'), $this->builder->val($this->options['k']));
+            $node->value->items[] = $newItem;
         }
     }
 

@@ -2,8 +2,9 @@
 
 namespace Laraboot\Console\Commands;
 
-use Illuminate\Console\Concerns;
 use Laraboot\Commands\EditConfigFileCommand;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class ConfigEditCommand extends EditConfigFileCommand
 {
@@ -58,7 +59,7 @@ class ConfigEditCommand extends EditConfigFileCommand
     protected $description = 'Edit a configuration value and persist the result in file';
 
     /**
-     * @return \Symfony\Component\Console\Input\InputOption[]
+     * @return InputOption[]
      */
     protected function getOptions()
     {
@@ -66,7 +67,7 @@ class ConfigEditCommand extends EditConfigFileCommand
     }
 
     /**
-     * @return \Symfony\Component\Console\Input\InputArgument[]
+     * @return InputArgument[]
      */
     protected function getArguments()
     {

@@ -5,16 +5,17 @@ namespace Laraboot\Utils;
 
 use Laraboot\Schema\VisitorContext;
 use Laraboot\Visitor\AppendArrayItemsVisitor;
-use PhpParser\{NodeTraverser, PrettyPrinter};
+use PhpParser\{NodeTraverser};
 use PhpParser\ParserFactory;
+use PhpParser\PrettyPrinter\Standard;
 
 class ConfigFileDumper
 {
     private $parser;
-
-    private string $filename;
-
-    private VisitorContext $context;
+    /**
+     * @var VisitorContext $context
+     */
+    private $context;
 
     /**
      * ConfigFileDumper constructor.
@@ -24,7 +25,7 @@ class ConfigFileDumper
     {
         $this->parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
 
-        if ($context) {
+        if ($context !== null) {
             $this->context = $context;
         }
     }
@@ -52,7 +53,7 @@ class ConfigFileDumper
     public function execute(): string
     {
         $traverser = new NodeTraverser();
-        $prettyPrinter = new PrettyPrinter\Standard;
+        $prettyPrinter = new Standard;
 
         foreach ($this->getVisitors() as $visitorClass) {
             $visitor = new $visitorClass($this->context);
@@ -65,9 +66,7 @@ class ConfigFileDumper
 
         $ast = $traverser->traverse($stmts);
 
-        $print = $prettyPrinter->prettyPrintFile($ast);
-
-        return $print;
+        return $prettyPrinter->prettyPrintFile($ast);
     }
 
     /**

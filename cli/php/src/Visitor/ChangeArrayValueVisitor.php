@@ -22,7 +22,10 @@ use PhpParser\NodeVisitorAbstract;
  */
 class ChangeArrayValueVisitor extends NodeVisitorAbstract
 {
-    private VisitorContext $VisitorContext;
+    /**
+     * @var VisitorContext $VisitorContext
+     */
+    private $VisitorContext;
 
     /**
      * ChangeArrayValueVisitor constructor.
@@ -37,16 +40,17 @@ class ChangeArrayValueVisitor extends NodeVisitorAbstract
      * @param array $options
      * @return AppendArrayItemsVisitor
      */
-    public function fromArray(array $options)
+    public function fromArray(array $options): self
     {
         return new self(VisitorContext::fromArray($options));
     }
 
+
     /**
      * @param Node $node
-     * @return int|Node|Node[]|void|null
+     * @return Node
      */
-    public function leaveNode(Node $node)
+    public function leaveNode(Node $node): Node
     {
         $context = $this->VisitorContext->getContext();
         $searchKey = $context[VisitorContext::PATH_KEY];
@@ -71,5 +75,7 @@ class ChangeArrayValueVisitor extends NodeVisitorAbstract
                 return $node;
             }
         }
+
+        return $node;
     }
 }

@@ -5,13 +5,10 @@ namespace Laraboot\Visitor;
 use Laraboot\Exp\EnvOrDefaultExp;
 use Laraboot\Exp\GetEnvOrDefaultExp;
 use Laraboot\Schema\VisitorContext;
-use Laraboot\Utils\HelperExpressions;
 use PhpParser\{Node};
 use PhpParser\Node\Expr\{Array_, ArrayItem};
+use PhpParser\Node\Scalar\String_;
 use PhpParser\NodeVisitorAbstract;
-use function get_class;
-use function print_r;
-use function strtoupper;
 
 
 /**
@@ -20,7 +17,10 @@ use function strtoupper;
  */
 class AppendArrayItemsVisitor extends NodeVisitorAbstract
 {
-    private VisitorContext $context;
+    /**
+     * @var VisitorContext $context
+     */
+    private $context;
 
     /**
      * AppendArrayItemsVisitor constructor.
@@ -42,9 +42,9 @@ class AppendArrayItemsVisitor extends NodeVisitorAbstract
 
     /**
      * @param Node $node
-     * @return int|Node|Node[]|void|null
+     * @return Node
      */
-    public function leaveNode(Node $node)
+    public function leaveNode(Node $node): Node
     {
         if ($node instanceof Array_) {
 
@@ -56,7 +56,7 @@ class AppendArrayItemsVisitor extends NodeVisitorAbstract
                     $attrs = $v->getAttributes();
                     $items[] = new ArrayItem(
                         GetEnvOrDefaultExp::chainOfEnvCallsWithDefault($attrs['key'], $attrs['orenv'], $attrs['value'])
-                        , new Node\Scalar\String_($attrs['key']));
+                        , new String_($attrs['key']));
                 }
 
             }

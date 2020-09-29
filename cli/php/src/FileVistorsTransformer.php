@@ -4,16 +4,25 @@
 namespace Laraboot;
 
 use Laraboot\Schema\VisitorContext;
-use PhpParser\{NodeTraverser, PrettyPrinter};
+use PhpParser\{NodeTraverser};
+use PhpParser\Node\Stmt;
 use PhpParser\ParserFactory;
+use PhpParser\PrettyPrinter\Standard;
 
 class FileVistorsTransformer
 {
+    /**
+     * @var mixed[]|mixed
+     */
+    public $visitors;
     private $parser;
 
-    private string $filename;
+    private $filename;
 
-    private VisitorContext $visitorContext;
+    /**
+     * @var VisitorContext
+     */
+    private $visitorContext;
 
     /**
      * FileVistorsTransformer constructor.
@@ -37,7 +46,7 @@ class FileVistorsTransformer
     public function transform(): string
     {
         $traverser = new NodeTraverser();
-        $prettyPrinter = new PrettyPrinter\Standard;
+        $prettyPrinter = new Standard;
 
         foreach ($this->visitors as $visitorClass) {
             $visitor = new $visitorClass($this->visitorContext);
@@ -48,9 +57,7 @@ class FileVistorsTransformer
 
         $ast = $traverser->traverse($stmts);
 
-        $print = $prettyPrinter->prettyPrintFile($ast);
-
-        return $print;
+        return $prettyPrinter->prettyPrintFile($ast);
     }
 
     /**
@@ -59,18 +66,16 @@ class FileVistorsTransformer
      */
     public function readFilePath()
     {
-        $code = file_get_contents($this->filename, true);
-        return $code;
+        return file_get_contents($this->filename, true);
     }
 
     /**
-     * @return \PhpParser\Node\Stmt[]|null
+     * @return Stmt[]|null
      */
     public function parseFileContent(): array
     {
         $code = $this->readFilePath();
-        $stmts = $this->parser->parse($code);
-        return $stmts;
+        return $this->parser->parse($code);
     }
 
 }
