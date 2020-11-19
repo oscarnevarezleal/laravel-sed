@@ -34,7 +34,8 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-suggest
 
       - name: Test
-        run: cd cli/php && \
+        run: |
+        cd cli/php && \
         composer install && \
         composer require --dev phpunit/phpunit ^9.3 && \
         vendor/bin/phpunit --configuration=phpunit.xml
