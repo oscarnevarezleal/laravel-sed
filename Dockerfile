@@ -26,6 +26,7 @@ RUN apk add \
     php-iconv \
     php-openssl \
     php-curl \
+    php-session \
     php-sodium \
     php-zip \
     php-zlib && \
