@@ -13,13 +13,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Dependencies
-        run: composer global require phpunit/phpunit
-
-      - name: Validate composer.json and composer.lock
-        run: composer require --dev phpunit/phpunit ^9.3
-
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v2
