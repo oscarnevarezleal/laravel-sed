@@ -18,7 +18,7 @@ alias larased='php cli/php/main.php '
 ### Docker alias
 ```bash
 # create an alias
-alias larased='docker run --rm -it -v `pwd`:/var/laraseed:ro laravel-sed:latest '
+alias larased='docker run --rm -it -v `pwd`:/var/laraseed:ro laravel-sed:latest'
 
 #windows
 docker run --rm -it -v ${PWD}:/var/laraseed:ro laravel-sed:latest -a config.edit -p faker_locale -v es_MX  
@@ -63,7 +63,12 @@ larased -a config.append_array_class_assoc -p aliases -v App\CustomProvider -k M
 |-v --value      |`Value`            | The new value|
 
 
+## Examples
 
+Change the application name
+```bash
+larased:config-edit --basePath app config.app/name Larased
+```
 
 ## Local
 If you want to run this project locally you'll need a laravel application located in the app folder.

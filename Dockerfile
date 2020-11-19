@@ -1,12 +1,4 @@
 FROM alpine:3.11
-WORKDIR /usr
-ADD cli/nodejs .
-RUN apk add --no-cache git nodejs nodejs-npm && \
-    npm i -g --unsafe-perm yarn typescript webpack webpack-cli &&  \
-    yarn
-# This is the build build process. Pending
-
-FROM alpine:3.11
 ARG PHP_VERSION=7.4
 ARG USER_ID=blue
 ENV CLI_BIN_DIR=/var/laraseed
@@ -16,7 +8,6 @@ WORKDIR $CLI_BIN_DIR
 
 ADD https://dl.bintray.com/php-alpine/key/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
 ADD cli cli
-ADD app app
 
 RUN apk --update add ca-certificates && \
     echo "https://dl.bintray.com/php-alpine/v3.11/php-${PHP_VERSION}" >> /etc/apk/repositories
