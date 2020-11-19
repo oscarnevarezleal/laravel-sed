@@ -14,8 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Dependencies
+        run: composer global require phpunit/phpunit
+
       - name: Validate composer.json and composer.lock
-        run: composer validate
+        run: composer require --dev phpunit/phpunit ^9.3
 
       - name: Cache Composer packages
         id: composer-cache
@@ -29,3 +32,6 @@ jobs:
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Test
+        run: vendor/bin/phpunit --configuration=cli/php/phpunit.xml
