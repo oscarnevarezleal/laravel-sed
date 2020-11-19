@@ -35,7 +35,7 @@ jobs:
 
       - name: Test
         run: |
-        cd cli/php && \
-        composer install && \
-        composer require --dev phpunit/phpunit ^9.3 && \
+        cd cli/php
+        composer install
+        composer require --dev phpunit/phpunit ^9.3
         vendor/bin/phpunit --configuration=phpunit.xml
