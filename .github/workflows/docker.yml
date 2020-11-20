@@ -19,4 +19,4 @@ jobs:
           # Build a docker container and
           # tag it.
           docker build -t larased .
-          docker run --rm -it -v `pwd`:/var/laraseed:ro larased
+          docker run --rm -v `pwd`:/var/laraseed:ro larased
