@@ -1,8 +1,6 @@
 # Laravel SED  
 
 This is a CLI utility that helps in the aid of replacing values or expressions in laravel config files.
-
-> **Note:**  Not every possible edit is possible right now mainly nested properties such as `database.connections.mysql.*` or `filesystems.disks.local.driver.*`
   
 > **Note:**  This project is primarily intended as CLI tool to manage laravel applications from the outside, although it contains several laravel commands expect that the mayority of features will be unavailable as Laravel commands.
 
@@ -31,6 +29,12 @@ docker run --rm -it -v `pwd`:/var/laraseed:ro laravel-sed:latest -a config.edit 
 ```bash  
 # How to change a literal value, e.g change faker_locale to es_MX
 larased -a config.edit -p faker_locale -v es_MX  
+
+# Modify by array path
+larased -a config.edit -p connections.mysql.username eb_user
+
+# Modify by array path with environment variable check first
+larased -a config.edit -e DB_USERNAME -p connections.mysql.username eb_user
 
 # Add a provider
 larased -a config.append_array_value -p providers -v App\CustomProvider
