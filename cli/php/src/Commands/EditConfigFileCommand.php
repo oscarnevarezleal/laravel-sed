@@ -5,9 +5,12 @@ namespace Laraboot\Commands;
 use Laraboot\Console\CliInputDefinition;
 use Laraboot\EditCommand;
 use Laraboot\FileVistorsTransformer;
+use Laraboot\Schema\VisitorContext;
 use Laraboot\TopLevelInputConfig;
 use Laraboot\Visitor\AppendArrayItemsVisitor;
 use Laraboot\Visitor\ChangeArrayValueVisitor;
+use Laraboot\Visitor\ChangeNestedArrayValueVisitor;
+use PhpParser\NodeVisitor\NodeConnectingVisitor;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use function file_put_contents;
@@ -46,8 +49,17 @@ class EditConfigFileCommand extends EditCommand
         $filename = sprintf('%s/%s.php', $basePath, $pathDef->getFileName());
 
         $visitorContext = $this->getVisitorContext($input, $pathDef);
+        $visitors = $this->getVisitors();
 
-        $transformer = new FileVistorsTransformer($filename, $this->getVisitors(), $visitorContext);
+        $transformer = new FileVistorsTransformer($filename, $visitors, $visitorContext);
+
+        if ($visitorContext->getContext()[VisitorContext::MODE] === 'default') {
+            $transformer->addVisitor(ChangeArrayValueVisitor::class);
+        } else {
+            $transformer->addVisitor(ChangeNestedArrayValueVisitor::class);
+        }
+
+        $transformer->addVisitor(AppendArrayItemsVisitor::class);
 
         if ($output->isVerbose()) {
             $output->writeln(sprintf('Running command from %s', getcwd()));
@@ -72,8 +84,7 @@ class EditConfigFileCommand extends EditCommand
     protected function getVisitors(): array
     {
         return [
-            ChangeArrayValueVisitor::class,
-            AppendArrayItemsVisitor::class
+            NodeConnectingVisitor::class
         ];
     }
 

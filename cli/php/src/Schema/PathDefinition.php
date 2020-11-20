@@ -115,6 +115,7 @@ class PathDefinition
     private function extractKey($path)
     {
         $tokens = explode('.', $path);
-        return array_pop($tokens);
+//        print_r($tokens);
+        return count($tokens) == 1 ? array_pop($tokens) : $path;
     }
 }

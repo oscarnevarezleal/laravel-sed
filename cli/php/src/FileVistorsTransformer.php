@@ -78,4 +78,15 @@ class FileVistorsTransformer
         return $this->parser->parse($code);
     }
 
+
+    /**
+     * @param $visitor
+     * @return FileVistorsTransformer
+     */
+    public function addVisitor($visitor)
+    {
+        $this->visitors[] = $visitor;
+        return $this;
+    }
+
 }

@@ -12,6 +12,7 @@ class VisitorContext
     const VALUE_KEY = TopLevelInputConfig::INPUT_VALUE_KEY;
     const ENV_OR_KEY = TopLevelInputConfig::OPTION_ENVOR_KEY;
 
+    const MODE = 'mode';
     const PATH_KEY = 'path';
 
     // PathDefinition or nulls

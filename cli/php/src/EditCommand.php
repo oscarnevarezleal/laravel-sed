@@ -29,9 +29,15 @@ class EditCommand extends Command
      * @param PathDefinition|null $pathDef
      * @return VisitorContext
      */
-    protected function getVisitorContext(InputInterface $input, \Laraboot\Schema\PathDefinition $pathDef = null): VisitorContext
+    protected function getVisitorContext(InputInterface $input
+        , \Laraboot\Schema\PathDefinition $pathDef = null): VisitorContext
     {
         $inputContext = array_merge($input->getArguments(), $input->getOptions());
+
+        $mode = substr_count($inputContext[VisitorContext::PATH_KEY], '.') >= 1 ?
+            'nested' : 'default';
+
+        $inputContext[VisitorContext::MODE] = $mode;
 
         if ($pathDef !== null) {
             $inputContext = array_merge($inputContext, $pathDef->asArray());
