@@ -23,7 +23,7 @@
     }
   },
   "require": {
-    "php": "^7.4",
+    "php": "^7.4|8.0",
     "nikic/php-parser": "^4.9"
   },
   "require-dev": {
