@@ -2,15 +2,14 @@ FROM alpine:3.11
 ARG PHP_VERSION=7.4
 ARG USER_ID=1001
 ARG GROUP_ID=1001
-ENV CLI_BIN_DIR=/var/larased
+ENV LARASED_HOME=/var/laravel-sed
 ENV LARAVEL_APP_DIR=/var/app
 ENV APK_DEL="curl"
 
-WORKDIR $CLI_BIN_DIR
-
-ADD https://dl.bintray.com/php-alpine/key/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
+WORKDIR $LARASED_HOME
 ADD cli cli
 
+ADD https://dl.bintray.com/php-alpine/key/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
 RUN apk --update add ca-certificates && \
     echo "https://dl.bintray.com/php-alpine/v3.11/php-${PHP_VERSION}" >> /etc/apk/repositories
 
@@ -46,11 +45,11 @@ RUN curl -s -o composer-setup.php https://getcomposer.org/installer \
     && curl -L https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer \
     && mv php-cs-fixer /usr/local/bin/php-cs-fixer
 
-RUN cd $CLI_BIN_DIR/cli/php && \
+RUN cd $LARASED_HOME/cli/php && \
     composer install && \
-    ls -ltah $CLI_BIN_DIR/cli/php/vendor
+    ls -ltah $LARASED_HOME/cli/php/vendor
 
-WORKDIR $CLI_BIN_DIR
+WORKDIR $LARASED_HOME
 
 RUN apk del ${APK_DEL} && \
     rm -fR /var/cache/apk/*
@@ -58,15 +57,15 @@ RUN apk del ${APK_DEL} && \
 RUN mkdir -p $LARAVEL_APP_DIR && \
     chown -R $USER_ID:$USER_ID $LARAVEL_APP_DIR
 
-RUN chmod g+rw $CLI_BIN_DIR && \
-    chown -R $USER_ID:$USER_ID $CLI_BIN_DIR
+RUN chmod g+rw $LARASED_HOME && \
+    chown -R $USER_ID:$USER_ID $LARASED_HOME
 
 USER $USER_ID
 
-VOLUME $CLI_BIN_DIR
+VOLUME $LARASED_HOME/cli
 VOLUME $LARAVEL_APP_DIR
 
-RUN ["chmod", "+x", "/var/larased/cli/main.sh"]
+RUN ["chmod", "+x", "/var/laravel-sed/cli/main.sh"]
 
-ENTRYPOINT ["/var/larased/cli/main.sh"]
+ENTRYPOINT ["/var/laravel-sed/cli/main.sh"]
 CMD ["/bin/bash"]

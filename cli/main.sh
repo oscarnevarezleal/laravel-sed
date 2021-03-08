@@ -1,16 +1,17 @@
 #!/bin/bash
 
-readonly CLI_DIR="${CLI_BIN_DIR}/cli"
-: ${LARAVEL_APP_DIR:=${CLI_BIN_DIR}/app}
+: ${LARASED_HOME:=/var/laravel-sed}
+: ${LARAVEL_APP_DIR:=/var/app}
 
-echo "[Php]                     -------> $(php -v)"
-echo "[Args]                    -------> $@"
-echo "[InstallationPath]        -------> $CLI_BIN_DIR"
-echo "[LaravelAppDir]           -------> $LARAVEL_APP_DIR"
+readonly LARASED="${LARASED_HOME}/cli/php/index.php"
 
+echo "[Args]           =  $@"
+echo "[LarasedHome]    =  $LARASED_HOME"
+echo "[LarasedMain]    =  $LARASED"
+echo "[LaravelAppDir]  =  $LARAVEL_APP_DIR"
 
-if [ ! -d "$CLI_BIN_DIR" ]; then
-    echo "$CLI_BIN_DIR doesnt exists"
+if [ ! -d "$LARASED_HOME" ]; then
+    echo "$LARASED_HOME doesnt exists"
     exit 125;
 fi
 
@@ -24,18 +25,15 @@ if [ "$#" -lt 1 ]; then
     exit 126;
 fi
 
+#ls -ltah $LARAVEL_APP_DIR
+#ls -ltah $LARASED_HOME/cli/php
 
-ls -ltah $LARAVEL_APP_DIR
-ls -ltah $CLI_BIN_DIR/cli/php
+php7 -derror_reporting=E_ALL "$LARASED" $@ -d $LARAVEL_APP_DIR
 
-cd $CLI_DIR && \
-    php7 -derror_reporting=E_ALL \
-    $CLI_BIN_DIR/cli/php/index.php \
-    -d "$LARAVEL_APP_DIR" $@
-
-cd $LARAVEL_APP_DIR & \
+if [ "$#" -gt 1 ]; then
     php7 /usr/local/bin/php-cs-fixer fix \
-    --config=$CLI_BIN_DIR/cli/php/.php_cs.dist \
+    --config=$LARASED_HOME/cli/php/.php_cs.dist \
     --dry-run \
     --stop-on-violation \
     --using-cache=no
+fi
