@@ -1,12 +1,13 @@
 #!/bin/bash
 
-php -v
+readonly CLI_DIR="${CLI_BIN_DIR}/cli"
+: ${LARAVEL_APP_DIR="${CLI_BIN_DIR}/app"}
 
-echo "[Running] $@"
+echo "[Php] $(php -v)"
+echo "[Args] $@"
 echo "[InstallationPath] $CLI_BIN_DIR"
+echo "[LaravelAppDir] $LARAVEL_APP_DIR"
 
-CLI_DIR="${CLI_BIN_DIR}/cli"
-LARAVEL_APP_DIR="${CLI_BIN_DIR}/app"
 
 if [ ! -d "$CLI_BIN_DIR" ]; then
     echo "$CLI_BIN_DIR doesnt exists"

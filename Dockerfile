@@ -3,6 +3,7 @@ ARG PHP_VERSION=7.4
 ARG USER_ID=1001
 ARG GROUP_ID=1001
 ENV CLI_BIN_DIR=/var/larased
+ENV LARAVEL_APP_DIR=/var/app
 ENV APK_DEL="curl"
 
 WORKDIR $CLI_BIN_DIR
@@ -46,12 +47,16 @@ RUN curl -s -o composer-setup.php https://getcomposer.org/installer \
     && mv php-cs-fixer /usr/local/bin/php-cs-fixer
 
 RUN cd $CLI_BIN_DIR/cli/php && \
-    composer install
+    composer install && \
+    ls -ltah $CLI_BIN_DIR/cli/php/vendor
 
 WORKDIR $CLI_BIN_DIR
 
 RUN apk del ${APK_DEL} && \
     rm -fR /var/cache/apk/*
+
+RUN mkdir -p $LARAVEL_APP_DIR && \
+    chown -R $USER_ID:$USER_ID $LARAVEL_APP_DIR
 
 RUN chmod g+rw $CLI_BIN_DIR && \
     chown -R $USER_ID:$USER_ID $CLI_BIN_DIR
@@ -59,6 +64,7 @@ RUN chmod g+rw $CLI_BIN_DIR && \
 USER $USER_ID
 
 VOLUME $CLI_BIN_DIR
+VOLUME $LARAVEL_APP_DIR
 
 RUN ["chmod", "+x", "/var/larased/cli/main.sh"]
 
