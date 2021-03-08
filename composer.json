@@ -27,6 +27,6 @@
     "nikic/php-parser": "^4.9"
   },
   "require-dev": {
-    "rector/rector": "^0.7.65"
+    "rector/rector": "^0.9.31"
   }
 }
