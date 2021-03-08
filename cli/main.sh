@@ -8,6 +8,16 @@ echo "[InstallationPath] $CLI_BIN_DIR"
 CLI_DIR="${CLI_BIN_DIR}/cli"
 LARAVEL_APP_DIR="${CLI_BIN_DIR}/app"
 
+if [ !-d $CLI_BIN_DIR ]; then
+    echo "$CLI_BIN_DIR doesnt exists"
+    exit 125;
+fi
+
+if [ !-d $LARAVEL_APP_DIR ]; then
+    echo "$LARAVEL_APP_DIR doesnt exists"
+    exit 125;
+fi
+
 ls -ltah $LARAVEL_APP_DIR
 
 cd $CLI_DIR && \

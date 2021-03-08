@@ -19,4 +19,7 @@ jobs:
           # Build a docker container and
           # tag it.
           docker build -t larased .
-          docker run --rm -v `pwd`:/var/laraseed:ro larased
+          # Let's grab the latest version of a laravel application to test against
+          composer create-project --prefer-dist laravel/laravel app
+          # Run
+          docker run --rm -v `pwd`:/var/larased:ro larased
