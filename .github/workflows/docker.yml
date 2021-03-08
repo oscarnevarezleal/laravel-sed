@@ -25,4 +25,4 @@ jobs:
           # Let's grab the latest version of a laravel application to test against
           composer create-project --prefer-dist laravel/laravel app
           # Run
-          docker run --rm -v `pwd`:/var/app:ro larased --help
+          docker run --rm -v `pwd`/app:/var/app:ro larased --help

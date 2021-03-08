@@ -3,10 +3,10 @@
 readonly CLI_DIR="${CLI_BIN_DIR}/cli"
 : ${LARAVEL_APP_DIR:=${CLI_BIN_DIR}/app}
 
-echo "[Php]                         -------> $(php -v)"
-echo "[Args]                        -------> $@"
-echo "[InstallationPath]            -------> $CLI_BIN_DIR"
-echo "[LaravelAppDir]               -------> $LARAVEL_APP_DIR"
+echo "[Php]                     -------> $(php -v)"
+echo "[Args]                    -------> $@"
+echo "[InstallationPath]        -------> $CLI_BIN_DIR"
+echo "[LaravelAppDir]           -------> $LARAVEL_APP_DIR"
 
 
 if [ ! -d "$CLI_BIN_DIR" ]; then
