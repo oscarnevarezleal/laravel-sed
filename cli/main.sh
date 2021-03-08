@@ -25,10 +25,11 @@ fi
 
 
 ls -ltah $LARAVEL_APP_DIR
+ls -ltah $CLI_BIN_DIR
 
 cd $CLI_DIR && \
     php7 -derror_reporting=E_ALL \
-    $CLI_BIN_DIR/cli/php/main.php \
+    $CLI_BIN_DIR/cli/php/index.php \
     -d $LARAVEL_APP_DIR $@
 
 cd $LARAVEL_APP_DIR & \
