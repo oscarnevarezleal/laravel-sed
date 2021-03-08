@@ -25,7 +25,7 @@ fi
 
 
 ls -ltah $LARAVEL_APP_DIR
-ls -ltah $CLI_BIN_DIR
+ls -ltah $CLI_BIN_DIR/cli/php
 
 cd $CLI_DIR && \
     php7 -derror_reporting=E_ALL \
