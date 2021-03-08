@@ -18,7 +18,7 @@ if [ ! -d "$LARAVEL_APP_DIR" ]; then
     exit 125;
 fi
 
-if [ "$#" -lt 2 ]; then
+if [ "$#" -lt 1 ]; then
     echo "Illegal number of parameters"
     exit 126;
 fi
