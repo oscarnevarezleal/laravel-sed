@@ -1,6 +1,7 @@
 FROM alpine:3.11
 ARG PHP_VERSION=7.4
-ARG USER_ID=blue
+ARG USER_ID=1001
+ARG GROUP_ID=1001
 ENV CLI_BIN_DIR=/var/larased
 ENV APK_DEL="curl"
 
@@ -45,8 +46,7 @@ RUN curl -s -o composer-setup.php https://getcomposer.org/installer \
     && mv php-cs-fixer /usr/local/bin/php-cs-fixer
 
 RUN cd $CLI_BIN_DIR/cli/php && \
-    composer install && \
-    ls -ltah $CLI_BIN_DIR/cli/php
+    composer install
 
 WORKDIR $CLI_BIN_DIR
 

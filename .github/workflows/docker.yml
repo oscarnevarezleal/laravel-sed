@@ -16,9 +16,12 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
         run: |
+          export USER_ID=$(id -u)
+          export GROUP_ID=$(id -g)
+          export CURRENT_UID=$USER_ID:$GROUP_ID
           # Build a docker container and
           # tag it.
-          docker build -t larased .
+          docker build --build-arg USER_ID=$USER_ID --build-arg GROUP_ID=$GROUP_ID -t larased .
           # Let's grab the latest version of a laravel application to test against
           composer create-project --prefer-dist laravel/laravel app
           # Run
