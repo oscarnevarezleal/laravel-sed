@@ -1,12 +1,12 @@
 #!/bin/bash
 
 readonly CLI_DIR="${CLI_BIN_DIR}/cli"
-: ${LARAVEL_APP_DIR="${CLI_BIN_DIR}/app"}
+: ${LARAVEL_APP_DIR:=${CLI_BIN_DIR}/app}
 
-echo "[Php] $(php -v)"
-echo "[Args] $@"
-echo "[InstallationPath] $CLI_BIN_DIR"
-echo "[LaravelAppDir] $LARAVEL_APP_DIR"
+echo "[Php]                         -------> $(php -v)"
+echo "[Args]                        -------> $@"
+echo "[InstallationPath]            -------> $CLI_BIN_DIR"
+echo "[LaravelAppDir]               -------> $LARAVEL_APP_DIR"
 
 
 if [ ! -d "$CLI_BIN_DIR" ]; then
@@ -31,7 +31,7 @@ ls -ltah $CLI_BIN_DIR/cli/php
 cd $CLI_DIR && \
     php7 -derror_reporting=E_ALL \
     $CLI_BIN_DIR/cli/php/index.php \
-    -d $LARAVEL_APP_DIR $@
+    -d "$LARAVEL_APP_DIR" $@
 
 cd $LARAVEL_APP_DIR & \
     php7 /usr/local/bin/php-cs-fixer fix \
