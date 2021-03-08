@@ -1,13 +1,14 @@
 #!/bin/bash
 
+php -v
+
 echo "[Running] $@"
 echo "[InstallationPath] $CLI_BIN_DIR"
 
 CLI_DIR="${CLI_BIN_DIR}/cli"
 LARAVEL_APP_DIR="${CLI_BIN_DIR}/app"
 
-php -v
-git --version
+ls -ltah $LARAVEL_APP_DIR
 
 cd $CLI_DIR && \
     php7 -derror_reporting=E_ALL \

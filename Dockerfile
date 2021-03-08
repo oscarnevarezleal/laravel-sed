@@ -1,7 +1,7 @@
 FROM alpine:3.11
 ARG PHP_VERSION=7.4
 ARG USER_ID=blue
-ENV CLI_BIN_DIR=/var/laraseed
+ENV CLI_BIN_DIR=/var/larased
 ENV APK_DEL="curl"
 
 WORKDIR $CLI_BIN_DIR
@@ -60,7 +60,7 @@ USER $USER_ID
 
 VOLUME $CLI_BIN_DIR
 
-RUN ["chmod", "+x", "/var/laraseed/cli/main.sh"]
+RUN ["chmod", "+x", "/var/larased/cli/main.sh"]
 
-ENTRYPOINT ["/var/laraseed/cli/main.sh"]
+ENTRYPOINT ["/var/larased/cli/main.sh"]
 CMD ["/bin/bash"]
