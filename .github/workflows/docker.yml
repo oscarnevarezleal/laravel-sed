@@ -48,7 +48,7 @@ jobs:
         export CURRENT_UID=$USER_ID:$GROUP_ID
         # Build a docker container and
         # tag it.
-        docker build --build-arg USER_ID=$USER_ID --build-arg GROUP_ID=$GROUP_ID -t larased .
+        docker build --build-arg USER_ID=$USER_ID --build-arg GROUP_ID=$GROUP_ID --tag $IMAGE_NAME .
 
       - name: Log into registry
         run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
