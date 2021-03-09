@@ -28,6 +28,5 @@ jobs:
 
       - name: Test
         run: |
-          cd cli/php
           composer install
           vendor/bin/phpunit --configuration=phpunit.xml
