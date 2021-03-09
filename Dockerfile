@@ -67,4 +67,4 @@ VOLUME $LARAVEL_APP_DIR
 RUN ["chmod", "+x", "/var/laravel-sed/scripts/entrypoint.sh"]
 
 ENTRYPOINT ["/var/laravel-sed/scripts/entrypoint.sh"]
-CMD ["config-edit", "--help"]
+CMD ["list"]
