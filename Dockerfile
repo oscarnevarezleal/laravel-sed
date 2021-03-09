@@ -7,7 +7,8 @@ ENV LARAVEL_APP_DIR=/var/app
 ENV APK_DEL="curl"
 
 WORKDIR $LARASED_HOME
-ADD cli cli
+
+ADD . .
 
 ADD https://dl.bintray.com/php-alpine/key/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
 RUN apk --update add ca-certificates && \
@@ -45,11 +46,9 @@ RUN curl -s -o composer-setup.php https://getcomposer.org/installer \
     && curl -L https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer \
     && mv php-cs-fixer /usr/local/bin/php-cs-fixer
 
-RUN cd $LARASED_HOME/cli/php && \
-    composer install && \
-    ls -ltah $LARASED_HOME/cli/php/vendor
-
 WORKDIR $LARASED_HOME
+
+RUN composer install
 
 RUN apk del ${APK_DEL} && \
     rm -fR /var/cache/apk/*
@@ -62,10 +61,10 @@ RUN chmod g+rw $LARASED_HOME && \
 
 USER $USER_ID
 
-VOLUME $LARASED_HOME/cli
+VOLUME $LARASED_HOME/scripts
 VOLUME $LARAVEL_APP_DIR
 
-RUN ["chmod", "+x", "/var/laravel-sed/cli/main.sh"]
+RUN ["chmod", "+x", "/var/laravel-sed/scripts/main.sh"]
 
-ENTRYPOINT ["/var/laravel-sed/cli/main.sh"]
-CMD ["/bin/bash"]
+ENTRYPOINT ["/var/laravel-sed/scripts/main.sh"]
+CMD ["config-edit", "--help"]

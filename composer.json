@@ -14,6 +14,7 @@
       "email": "fu.wire@gmail.com"
     }
   ],
+  "bin": ["bin/index.php"],
   "autoload": {
     "psr-4": {
       "Laraboot\\": "./src/"

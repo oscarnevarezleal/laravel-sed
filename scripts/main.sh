@@ -3,12 +3,12 @@
 : ${LARASED_HOME:=/var/laravel-sed}
 : ${LARAVEL_APP_DIR:=/var/app}
 
-readonly LARASED="${LARASED_HOME}/cli/php/index.php"
+readonly LARASED="${LARASED_HOME}/index.php"
 
 echo "[Args]           =  $@"
 echo "[LarasedHome]    =  $LARASED_HOME"
 echo "[LarasedMain]    =  $LARASED"
-echo "[LaravelAppDir]  =  $LARAVEL_APP_DIR"
+echo "[LaravelAppDir]  =  $LARAVEL_APP_DIR \n"
 
 if [ ! -d "$LARASED_HOME" ]; then
     echo "$LARASED_HOME doesnt exists"
@@ -25,14 +25,11 @@ if [ "$#" -lt 1 ]; then
     exit 126;
 fi
 
-#ls -ltah $LARAVEL_APP_DIR
-#ls -ltah $LARASED_HOME/cli/php
-
-php7 -derror_reporting=E_ALL "$LARASED" $@ -d $LARAVEL_APP_DIR
+php7 -derror_reporting=E_ALL "$LARASED" larased:$@ -d $LARAVEL_APP_DIR
 
 if [ "$#" -gt 1 ]; then
     php7 /usr/local/bin/php-cs-fixer fix \
-    --config=$LARASED_HOME/cli/php/.php_cs.dist \
+    --config=$LARASED_HOME/.php_cs.dist \
     --dry-run \
     --stop-on-violation \
     --using-cache=no
