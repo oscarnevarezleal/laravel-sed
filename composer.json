@@ -1,6 +1,6 @@
 {
   "name": "oscarnevarezleal/laravel-sed",
-  "type": "project",
+  "type": "library",
   "description": "Larased CLI",
   "keywords": [
     "laraboot",
@@ -14,7 +14,7 @@
       "email": "fu.wire@gmail.com"
     }
   ],
-  "bin": ["bin/index.php"],
+  "bin": ["larased"],
   "autoload": {
     "psr-4": {
       "Laraboot\\": "./src/"
@@ -34,7 +34,8 @@
   },
   "require": {
     "php": "^7.3|^8.0",
-    "symfony/console": "^5.2.0"
+    "symfony/console": "^5.2.0",
+    "nikic/php-parser": "^4.10"
   },
   "require-dev": {
     "rector/rector": "^0.9.31",

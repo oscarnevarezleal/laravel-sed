@@ -30,3 +30,8 @@ jobs:
         run: |
           composer install
           vendor/bin/phpunit --configuration=phpunit.xml
+      
+      - name: Test Bin
+        run: |
+          alias larased_bin="php $(pwd)/bin/larased"
+          larased_bin

@@ -64,7 +64,7 @@ USER $USER_ID
 VOLUME $LARASED_HOME/scripts
 VOLUME $LARAVEL_APP_DIR
 
-RUN ["chmod", "+x", "/var/laravel-sed/scripts/main.sh"]
+RUN ["chmod", "+x", "/var/laravel-sed/scripts/entrypoint.sh"]
 
-ENTRYPOINT ["/var/laravel-sed/scripts/main.sh"]
-CMD ["config-edit", "--help"]
+ENTRYPOINT ["/var/laravel-sed/scripts/entrypoint.sh"]
+CMD ["list"]
