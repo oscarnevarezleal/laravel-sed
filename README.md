@@ -45,7 +45,7 @@ larased larased:config-edit config.database/connections.mysql.username noroot
 ```
 Modify by array path with environment variable check first
 ```bash
-larased -a config.edit -e DB_USERNAME -p connections.mysql.username eb_user
+larased larased:config-edit config -e DB_USERNAME -p connections.mysql.username eb_user
 ```
 
 ## Commands
