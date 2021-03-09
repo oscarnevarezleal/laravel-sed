@@ -3,6 +3,9 @@
 namespace Laraboot;
 
 use Symfony\Component\Console\Application;
+use Laraboot\Commands\EditConfigFileCommand;
+use Laraboot\Commands\ApplyPresetCommand;
+use Laraboot\Commands\GenerateConfigFile;
 
 class LarasedApplication extends Application
 {
@@ -14,6 +17,13 @@ class LarasedApplication extends Application
     public function __construct(string $name = 'Larased', string $version = '0.0.1')
     {
         parent::__construct($name, $version);
+
+        // ... register commands
+        $this->addCommands([
+            new EditConfigFileCommand,
+            new ApplyPresetCommand,
+            new GenerateConfigFile
+        ]);
     }
 
 

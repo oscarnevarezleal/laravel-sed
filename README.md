@@ -15,6 +15,8 @@ alias larased='php cli/php/main.php '
 
 ### Docker alias
 ```bash
+# Pull latest
+docker pull docker pull docker.pkg.github.com/oscarnevarezleal/laravel-sed/laravel-sed:dev
 # create an alias
 alias larased='docker run --rm -it -v `pwd`:/var/laraseed:ro laravel-sed:latest'
 
