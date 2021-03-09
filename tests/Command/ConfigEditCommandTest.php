@@ -10,24 +10,16 @@ use Laraboot\Commands\EditConfigFileCommand;
 
 class ConfigEditCommandTest extends KernelTestCase
 {
-
-    protected function setUp(): void
-    {
-        exec('stty 2>&1', $output, $exitcode);
-        $isSttySupported = 0 === $exitcode;
-
-        if ('Windows' === PHP_OS_FAMILY || !$isSttySupported) {
-            $this->markTestSkipped('`stty` is required to test this command.');
-        }
-    }
-    
     /**
      * A set of config path values
      */
     public function pathAndValuesDataProvider(): ?\Generator
     {
         yield ['config.app/name', 'newName'];
-        yield ['config.app/env', 'test'];
+        yield ['config.app/env', 'alpha'];
+        // one more time
+        yield ['config.app/name', 'Gregory'];
+        yield ['config.app/env', 'delta'];
     }
     
     /**
@@ -38,12 +30,9 @@ class ConfigEditCommandTest extends KernelTestCase
      */
     public function testChangeConfigValueNonInteractive(string $path, string $value): void
     {
-        
-        $arguments = [];
-        
         $inputs = ['path' => $path, 'value' => $value ?? 'newValue'];
-        
-        $this->executeCommand($arguments, $inputs);
+
+        $this->executeCommand([], $inputs);
 
         $this->assertPathExpressionMatchValue($path, $value);
     }
@@ -78,6 +67,6 @@ class ConfigEditCommandTest extends KernelTestCase
     }
     
     protected function getSampleAppPath():string{
-        return dirname(__DIR__).'/../sample-apps/app';
+        return dirname(__DIR__) . '/../sample-apps/laravel-app';
     }
 }

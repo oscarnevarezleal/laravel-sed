@@ -26,6 +26,9 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress --no-suggest
 
+      - name: Prepare tests
+        run: composer create-project laravel/laravel sample-apps/laravel-app
+
       - name: Test
         run: |
           composer install
