@@ -2,82 +2,76 @@
 
 This is a CLI utility that helps in the aid of replacing values or expressions in laravel config files.
   
-> **Note:**  This project is primarily intended as CLI tool to manage laravel applications from the outside, although it contains several laravel commands expect that the mayority of features will be unavailable as Laravel commands.
+> **Note:**  This project is primarily intended as CLI tool to manage laravel applications from the outside, although it contains several laravel commands expect that the majority of features will be unavailable as Laravel commands.
 
-## Getting started
-
-### Bin alias
+## Installation
 ```bash
-# create an alias
-alias larased='php cli/php/main.php '
+composer global require oscarnevarezleal/laravel-sed
 ```
 
-
-### Docker alias
+## Usage
 ```bash
-# Pull latest
-docker pull docker pull docker.pkg.github.com/oscarnevarezleal/laravel-sed/laravel-sed:dev
-# create an alias
-alias larased='docker run --rm -it -v `pwd`:/var/laraseed:ro laravel-sed:latest'
+Larased
 
-#windows
-docker run --rm -it -v ${PWD}:/var/laraseed:ro laravel-sed:latest -a config.edit -p faker_locale -v es_MX  
-#linux MacOS
-docker run --rm -it -v `pwd`:/var/laraseed:ro laravel-sed:latest -a config.edit -p faker_locale -v es_MX  
+Usage:
+  command [options] [arguments]
+
+Options:
+  -h, --help            Display help for the given command. When no command is given display help for the list command
+  -q, --quiet           Do not output any message
+  -V, --version         Display this application version
+      --ansi            Force ANSI output
+      --no-ansi         Disable ANSI output
+  -n, --no-interaction  Do not ask any interactive question
+  -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+Available commands:
+  help                  Displays help for a command
+  list                  Lists commands
+ larased
+  larased:config-edit   Edits a config file
 ```
 
-## Usage  
+## Examples  
+Change a literal value, e.g change _faker_locale_ to _es_MX_
   
 ```bash  
-# How to change a literal value, e.g change faker_locale to es_MX
-larased -a config.edit -p faker_locale -v es_MX  
+larased larased:config-edit faker_locale es_MX  
+```
 
-# Modify by array path
-larased -a config.edit -p connections.mysql.username eb_user
-
-# Modify by array path with environment variable check first
+Modify by array path
+```bash 
+larased larased:config-edit config.database/connections.mysql.username noroot
+```
+Modify by array path with environment variable check first
+```bash
 larased -a config.edit -e DB_USERNAME -p connections.mysql.username eb_user
-
-# Add a provider
-larased -a config.append_array_value -p providers -v App\CustomProvider
-
-# Append array association to path, e.g aliases
-# This will append 'MyKey' => App\CustomProvider::class to aliases
-larased -a config.append_array_class_assoc -p aliases -v App\CustomProvider -k MyKey
-  
 ```
 
 ## Commands
 
 | Command        |Description                          |Laravel Example                         |
 |----------------|-------------------------------|-----------------------------|
-|config.edit | Replace literal value in configuration            |`config.php/`_`timezone`_|
-|config.append_array_value | Adds a new array item to the array  |`config.php/`_`providers`_|
-|config.append_array_class_assoc | Adds a new array association to the array  |`config.php/`_`aliases`_|
-|config-gen globals | Generates a config file from arguments
-
-
-
+|larased:config-edit | Replace literal value in configuration            |`config.php/`_`timezone`_|
 
 ## Options
 |                |ASCII                          |                         |
 |----------------|-------------------------------|-----------------------------|
-|-a --action     |`Action`            | The action or _command_ to run. See commands for reference |
-|-p --path       |`Path`            | The path where the modification will take place. Example `faker_locale`  or `providers` |
-|-k --key        |`Key`            | The key to modify in case the modification will need to look up into the path. |
 |-e --envor        |`EnvOr`            | When this option is specified, the result will be a call to _env_ function using primarily the value taken from the environment key specified under the `key|-k`  parameter and secondarily a default value specified under the `value|-v` parameters. Example: `'env' => env('APP_ENV', 'production')`|
-|-v --value      |`Value`            | The new value|
 
-
-## Examples
-
-Change the application name
+### Docker
 ```bash
-larased:config-edit --basePath app config.app/name Larased
+# Pull latest
+docker pull docker pull docker.pkg.github.com/oscarnevarezleal/laravel-sed/laravel-sed:dev
+
+# create an alias
+alias larased='docker run --rm -it -v `pwd`:/var/laraseed:ro laravel-sed:latest'
 ```
 
-## Local
-If you want to run this project locally you'll need a laravel application located in the app folder.
 ```bash
-composer create-project --prefer-dist laravel/laravel app  
+#windows
+docker run --rm -it -v ${PWD}:/var/laraseed:ro laravel-sed:latest config.edit faker_locale es_MX  
+
+#linux and MacOS
+docker run --rm -it -v `pwd`:/var/laraseed:ro laravel-sed:latest config.edit faker_locale es_MX  
 ```
