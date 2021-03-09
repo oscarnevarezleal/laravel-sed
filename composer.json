@@ -14,7 +14,7 @@
       "email": "fu.wire@gmail.com"
     }
   ],
-  "bin": ["bin/larased"],
+  "bin": ["larased"],
   "autoload": {
     "psr-4": {
       "Laraboot\\": "./src/"
