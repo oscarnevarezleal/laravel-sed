@@ -26,11 +26,11 @@ class FileVistorsTransformer
 
     /**
      * FileVistorsTransformer constructor.
-     * @param $filename
+     * @param string $filename
      * @param array $visitors
      * @param array $options
      */
-    public function __construct($filename, array $visitors, VisitorContext $visitorContext)
+    public function __construct(string $filename, array $visitors, VisitorContext $visitorContext)
     {
         $this->parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
 

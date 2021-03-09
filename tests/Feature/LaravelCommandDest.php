@@ -4,7 +4,10 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 
-class LaravelCommandTest extends TestCase
+/**
+ * Disabled 
+ * */
+class LaravelCommandDest extends TestCase
 {
     /**
      * Test a console command.
