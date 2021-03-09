@@ -1,6 +1,6 @@
 {
   "name": "oscarnevarezleal/laravel-sed",
-  "type": "project",
+  "type": "library",
   "description": "Larased CLI",
   "keywords": [
     "laraboot",
