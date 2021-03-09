@@ -24,44 +24,60 @@ class ConfigEditCommandTest extends KernelTestCase
     /**
      * A set of config path values
      */
-    public function pathDataProvider(): ?\Generator
+    public function pathAndValuesDataProvider(): ?\Generator
     {
-        yield ['config.name'];
-        yield ['config.env', 'test'];
+        yield ['config.app/name', 'newName'];
+        yield ['config.app/env', 'test'];
     }
     
     /**
-     * @dataProvider pathDataProvider
+     * @dataProvider pathAndValuesDataProvider
      *
      * This test provides all the arguments required by the command, so the
      * command runs non-interactively and it won't ask for any argument.
      */
-    public function testChangeConfigValueNonInteractive(string $path, string $value = null): void
+    public function testChangeConfigValueNonInteractive(string $path, string $value): void
     {
-        $sample_app_dir = dirname(__DIR__).'/../sample-apps/app';
         
-        $arguments = ['-d' => $sample_app_dir];
+        $arguments = [];
         
         $inputs = ['path' => $path, 'value' => $value ?? 'newValue'];
         
         $this->executeCommand($arguments, $inputs);
 
-        // $this->assertUserCreated($isAdmin);
+        $this->assertPathExpressionMatchValue($path, $value);
+    }
+    
+    protected function assertPathExpressionMatchValue(string $path, string $value){
+        $slash_pos = stripos($path, '/', 0);
+        $file = substr($path, 0, $slash_pos);
+        $file = str_replace('.', '/', $file);
+        $key = substr($path, $slash_pos + 1);
+        $res = require $this->getSampleAppPath()."/$file.php";
+
+        $this->assertArrayHasKey($key, $res);
+        $this->assertEquals($res[$key], $value);
     }
     
     private function executeCommand(array $arguments, array $inputs): void
     {
         self::bootKernel();
         
-        print_r($arguments);
-        print_r($inputs);
-
         // this uses a special testing container that allows you to fetch private services
         $command = self::$container->get(EditConfigFileCommand::class);
         $command->setApplication(new Application(''));
 
         $commandTester = new CommandTester($command);
-        $commandTester->setInputs([0, 1]);
-        $commandTester->execute($arguments);
+        // $commandTester->setInputs($inputs);
+        
+        $commandTester->execute(array_merge($inputs, [
+            // pass arguments to the helper
+            '-d' => $this->getSampleAppPath()
+        ]));
+
+    }
+    
+    protected function getSampleAppPath():string{
+        return dirname(__DIR__).'/../sample-apps/app';
     }
 }
