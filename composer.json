@@ -2,6 +2,7 @@
   "name": "oscarnevarezleal/laravel-sed",
   "type": "library",
   "description": "Larased CLI",
+  "version": "0.0.1",
   "keywords": [
     "laraboot",
     "larased"
