@@ -36,5 +36,4 @@ jobs:
       
       - name: Test Bin
         run: |
-          alias larased_bin="php $(pwd)/bin/larased"
-          larased_bin
+          php ./bin/larased
