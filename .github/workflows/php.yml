@@ -46,6 +46,7 @@ jobs:
         run: |
           output=$(jq -rc '.version' composer.json)
           echo "::set-output name=PACKAGE_VERSION::$output"
+        shell: bash
 
   release:
     name: Create Release
@@ -54,7 +55,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        shell: bash
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
