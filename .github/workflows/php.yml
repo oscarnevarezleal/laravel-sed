@@ -8,9 +8,9 @@ on:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
-
+    outputs:
+      PACKAGE_VERSION: ${{ steps.package-version.outputs.PACKAGE_VERSION }}
     steps:
       - uses: actions/checkout@v2
       - name: Cache Composer packages
@@ -38,6 +38,15 @@ jobs:
         run: |
           php larased
 
+      - name: Install Jq
+        run: sudo apt-get install -y jq
+
+      - name: Getting version right
+        id: package-version
+        run: |
+          output=$(jq -rc '.version' composer.json)
+          echo "::set-output name=PACKAGE_VERSION::$output"
+
   release:
     name: Create Release
     runs-on: ubuntu-latest
@@ -45,13 +54,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install Jq
-        run: sudo apt-get install -y jq
-      - name: Getting version right
-        id: package-version
-        run: |
-          output=$(jq -rc '.version' composer.json)
-          echo "::set-output name=PACKAGE_VERSION::$output"
         shell: bash
       - name: Create Release
         id: create_release
@@ -59,7 +61,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ steps.package-version.output.PACKAGE_VERSION }}
-          release_name: Release ${{ steps.package-version.output.PACKAGE_VERSION }}
+          tag_name: ${{ needs.test.outputs.PACKAGE_VERSION }}
+          release_name: Release ${{ needs.test.outputs.PACKAGE_VERSION }}
           draft: false
           prerelease: false
