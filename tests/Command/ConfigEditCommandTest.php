@@ -23,7 +23,7 @@ class ConfigEditCommandTest extends KernelTestCase
     public function pathAndValuesDataProvider(): ?\Generator
     {
         yield ['config.custom/models_namespace', 'Models'];
-        yield ['config.database/connections.mysql.prefix', "la_"];
+        yield ['config.custom/path.a.b.c.d', "true"];
         yield ['config.hashing/bcrypt.rounds', "50"];
         yield ['config.hashing/argon.memory', "2048"];
         yield ['config.app/name', 'newName'];
@@ -108,6 +108,7 @@ class ConfigEditCommandTest extends KernelTestCase
                         $this->assertEquals($current[$t], $value);
                     }
                 }
+                $current = $current[$t];
             }
         } else {
             $this->assertArrayHasKey($key, $res);
