@@ -77,13 +77,15 @@ class ArrayInterestedVisitor extends NodeVisitorAbstract
      */
     protected function matchPath()
     {
+        $search = $this->searchKey;
+
         if (count($this->stack) == 0) {
             return false;
         }
 
         $currentPath = join('.', $this->stack);
 
-        return $this->searchKey === $currentPath;
+        return $search === $currentPath;
     }
 
     protected function partialMatch()

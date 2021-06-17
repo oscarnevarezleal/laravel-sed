@@ -34,8 +34,10 @@ class EditCommand extends Command
     {
         $inputContext = array_merge($input->getArguments(), $input->getOptions());
 
-        $mode = substr_count($inputContext[VisitorContext::PATH_KEY], '.') >= 1 ?
-            'nested' : 'default';
+        // e.g config.hashing/bcrypt.rounds
+        $rightSide = explode('/', $inputContext[VisitorContext::PATH_KEY])[1];
+
+        $mode = substr_count($rightSide, '.') > 0 ? 'nested' : 'default';
 
         $inputContext[VisitorContext::MODE] = $mode;
 
