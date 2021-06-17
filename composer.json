@@ -2,13 +2,12 @@
   "name": "oscarnevarezleal/laravel-sed",
   "type": "library",
   "description": "Larased CLI",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "keywords": [
     "laraboot",
     "larased"
   ],
   "license": "MIT",
-
   "authors": [
     {
       "name": "Oscar Nevarez",
