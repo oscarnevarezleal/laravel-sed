@@ -60,8 +60,7 @@ class ChangeNestedArrayValueVisitor extends ArrayInterestedVisitor
         $context = $this->visitorContext->getContext();
         $replaceValue = $context[VisitorContext::VALUE_KEY];
 
-        if ($node instanceof ArrayItem &&
-            $this->matchPath()) {
+        if ($node instanceof ArrayItem && $this->matchPath()) {
             // clear the found path
             $this->clearPath();
             if (isset($context[VisitorContext::ENV_OR_KEY])) {
