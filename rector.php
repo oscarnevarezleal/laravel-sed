@@ -7,12 +7,23 @@ use Rector\Core\Configuration\Option;
 use Rector\Set\ValueObject\SetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
+use Rector\Core\Configuration\Option;
+use Rector\Core\ValueObject\PhpVersion;
+use Rector\Php74\Rector\Property\TypedPropertyRector;
+use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
+use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
+use Rector\Php80\Rector\Switch_\ChangeSwitchToMatchRector;
+use Rector\Php80\Rector\If_\NullsafeOperatorRector;
+use Rector\Php80\Rector\NotIdentical\StrContainsRector;
+use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
+use Rector\Set\ValueObject\SetList;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
 //use Utils\Rector\MyFirstRector;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     // get parameters
     $parameters = $containerConfigurator->parameters();
-//    $services = $containerConfigurator->services();
 
     // paths to refactor; solid alternative to CLI arguments
     $parameters->set(Option::PATHS, [__DIR__ . '/src', __DIR__ . '/tests']);
@@ -33,6 +44,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // skip classes used in PHP DocBlocks, like in /** @var \Some\Class */ [default: true]
     $parameters->set(Option::IMPORT_DOC_BLOCKS, true);
 
-    // is your PHP version different from the one your refactor to? [default: your PHP version]
-    $parameters->set(Option::PHP_VERSION_FEATURES, '7.3');
+    $services = $containerConfigurator->services();
+    $services->set(TypedPropertyRector::class);
+    $services->set(ClosureToArrowFunctionRector::class);
+    $services->set(ChangeSwitchToMatchRector::class);
+    $services->set(AnnotationToAttributeRector::class);
+    $services->set(ClassPropertyAssignToConstructorPromotionRector::class);
+    $services->set(NullsafeOperatorRector::class);
+    $services->set(StrContainsRector::class);
 };
