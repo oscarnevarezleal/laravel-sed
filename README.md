@@ -11,7 +11,7 @@ composer global require oscarnevarezleal/laravel-sed
 
 ## Usage
 ```bash
-Larased 0.0.3
+Larased 0.0.4
 
 Usage:
   command [options] [arguments]
