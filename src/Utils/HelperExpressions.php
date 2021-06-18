@@ -8,16 +8,14 @@
 
 namespace Laraboot\Utils;
 
-use PhpParser\Node\Expr\FuncCall;
 use PhpParser\{BuilderFactory, Node};
+use PhpParser\Node\Expr\FuncCall;
 
 
 class HelperExpressions
 {
 
     /**
-     * @param string $env
-     * @param string $default
      * @return Node\Expr\FuncCall
      */
     public static function envOrDefault(string $env, string $default): FuncCall

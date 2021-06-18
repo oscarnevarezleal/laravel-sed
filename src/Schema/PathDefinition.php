@@ -10,11 +10,23 @@ use function explode;
 
 class PathDefinition
 {
+    /**
+     * @var string
+     */
     const PATH_SEPARATOR = '/';
 
+    /**
+     * @var string
+     */
     const PROPERTY_FILENAME = 'propertyPath';
 
+    /**
+     * @var string
+     */
     const PROPERTY_KEY = TopLevelInputConfig::INPUT_PATH_KEY;
+    /**
+     * @var string
+     */
     const PROPERTY_PATH = TopLevelInputConfig::INPUT_PATH_KEY;
 
     private $fileName;
@@ -47,19 +59,11 @@ class PathDefinition
         return $this->key;
     }
 
-    /**
-     * @param string $str
-     * @return PathDefinition
-     */
     public static function fromString(string $str): PathDefinition
     {
         return new self(\explode(self::PATH_SEPARATOR, $str));
     }
 
-    /**
-     * @param array $tokens
-     * @return PathDefinition
-     */
     public static function fromArray(array $tokens): PathDefinition
     {
         return new self([
@@ -70,7 +74,6 @@ class PathDefinition
 
     /**
      * PathDefinition constructor.
-     * @param array $pieces
      */
     public function __construct(array $pieces)
     {

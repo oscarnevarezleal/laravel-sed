@@ -2,11 +2,13 @@
 
 namespace Laraboot\Visitor;
 
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\Array_;
+use PhpParser\Node\Expr\ArrayItem;
 use Laraboot\Exp\EnvOrDefaultExp;
 use Laraboot\Exp\GetEnvOrDefaultExp;
 use Laraboot\Schema\VisitorContext;
 use PhpParser\{Node};
-use PhpParser\Node\Expr\{Array_, ArrayItem};
 use PhpParser\Node\Scalar\String_;
 use PhpParser\NodeVisitorAbstract;
 
@@ -24,7 +26,6 @@ class AppendArrayItemsVisitor extends NodeVisitorAbstract
 
     /**
      * AppendArrayItemsVisitor constructor.
-     * @param VisitorContext $context
      */
     public function __construct(VisitorContext $context)
     {
@@ -32,7 +33,6 @@ class AppendArrayItemsVisitor extends NodeVisitorAbstract
     }
 
     /**
-     * @param array $options
      * @return AppendArrayItemsVisitor
      */
     public function fromArray(array $options)
@@ -50,7 +50,7 @@ class AppendArrayItemsVisitor extends NodeVisitorAbstract
 
             $items = $node->items ?? [];
 
-            foreach ($this->context->getContext() as $k => $v) {
+            foreach ($this->context->getContext() as $v) {
 
                 if ($v instanceof EnvOrDefaultExp) {
                     $attrs = $v->getAttributes();

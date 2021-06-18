@@ -3,7 +3,6 @@
 namespace Laraboot\Commands;
 
 use Laraboot\EditCommand;
-use Laraboot\Exp\EnvOrDefaultExp;
 use Laraboot\TopLevelInputConfig;
 use Laraboot\Utils\ConfigFileDumper;
 use Symfony\Component\Console\Command\Command;
@@ -11,12 +10,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use function array_map;
-use function array_pop;
-use function array_splice;
-use function count;
-use function explode;
-use function stripos;
 
 /**
  * Class EditConfigFileCommand
@@ -37,8 +30,6 @@ class GenerateConfigFile extends EditCommand
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -56,6 +47,7 @@ class GenerateConfigFile extends EditCommand
          */
         $preset = new ConfigFileDumper($context);
         $preset->setContext($context);
+
         $outputCode = $preset->execute();
 
         echo $outputCode;

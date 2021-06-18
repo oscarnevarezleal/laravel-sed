@@ -19,7 +19,6 @@ class ConfigFileDumper
 
     /**
      * ConfigFileDumper constructor.
-     * @param VisitorContext $context
      */
     public function __construct(VisitorContext $context = null)
     {
@@ -30,26 +29,17 @@ class ConfigFileDumper
         }
     }
 
-    /**
-     * @return VisitorContext|null
-     */
     public function getContext(): ?VisitorContext
     {
         return $this->context;
     }
 
-    /**
-     * @param VisitorContext $context
-     */
     public function setContext(VisitorContext $context): void
     {
         $this->context = $context;
     }
 
 
-    /**
-     * @return string
-     */
     public function execute(): string
     {
         $traverser = new NodeTraverser();
