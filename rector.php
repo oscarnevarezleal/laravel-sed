@@ -6,11 +6,6 @@ use Rector\Core\Configuration\Option;
 use Rector\Core\ValueObject\PhpVersion;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\Php74\Rector\Property\TypedPropertyRector;
-use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
-use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
-use Rector\Php80\Rector\If_\NullsafeOperatorRector;
-use Rector\Php80\Rector\NotIdentical\StrContainsRector;
-use Rector\Php80\Rector\Switch_\ChangeSwitchToMatchRector;
 use Rector\Set\ValueObject\SetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -35,7 +30,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     ]);
 
     // here we can define, what sets of rules will be applied
-    $parameters->set(Option::SETS, [SetList::CODE_QUALITY]);
+    $parameters->set(Option::SETS, [SetList::CODE_QUALITY, SetList::DEAD_CODE, SetList::PHP_73]);
     // auto import fully qualified class names? [default: false]
     $parameters->set(Option::AUTO_IMPORT_NAMES, true);
     // skip root namespace classes, like \DateTime or \Exception [default: true]
@@ -50,9 +45,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
     $services->set(TypedPropertyRector::class);
     $services->set(ClosureToArrowFunctionRector::class);
-    $services->set(ChangeSwitchToMatchRector::class);
-    $services->set(AnnotationToAttributeRector::class);
-    $services->set(ClassPropertyAssignToConstructorPromotionRector::class);
-    $services->set(NullsafeOperatorRector::class);
-    $services->set(StrContainsRector::class);
 };
