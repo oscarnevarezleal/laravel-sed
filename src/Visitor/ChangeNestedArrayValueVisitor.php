@@ -19,7 +19,7 @@ use PhpParser\Node\Expr\ArrayItem;
  * Class ChangeArrayValueVisitor
  * @package Laraboot\Visitor
  */
-class ChangeNestedArrayValueVisitor extends ArrayInterestedVisitor
+final class ChangeNestedArrayValueVisitor extends ArrayInterestedVisitor
 {
     /**
      * @var VisitorContext $visitorContext
@@ -69,10 +69,9 @@ class ChangeNestedArrayValueVisitor extends ArrayInterestedVisitor
                         GetEnvOrDefaultExp::chainOfEnvCallsWithDefault($keyValue, $tokens, $replaceValue)
                         , new NodeAlias\Scalar\String_($keyValue));
 
-                } else {
-                    return new ArrayItem(HelperExpressions::envOrDefault($context[VisitorContext::ENV_OR_KEY]
-                        , $context[VisitorContext::VALUE_KEY]), $node->key);
                 }
+                return new ArrayItem(HelperExpressions::envOrDefault($context[VisitorContext::ENV_OR_KEY]
+                    , $context[VisitorContext::VALUE_KEY]), $node->key);
 
             } else {
                 // return a new Array item expression
