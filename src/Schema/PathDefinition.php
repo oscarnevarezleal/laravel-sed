@@ -1,4 +1,13 @@
 <?php
+/*
+ * Copyright (c) 2021. Oscar Nevarez Leal <fu.wire@gmail.com>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 
 
 namespace Laraboot\Schema;
@@ -8,7 +17,7 @@ use function array_pop;
 use function array_walk;
 use function explode;
 
-class PathDefinition
+final class PathDefinition
 {
     /**
      * @var string
@@ -29,12 +38,15 @@ class PathDefinition
      */
     const PROPERTY_PATH = TopLevelInputConfig::INPUT_PATH_KEY;
 
+    /**
+     * @var string
+     */
     private $fileName;
 
     /**
      * @return mixed
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->fileName;
     }
@@ -85,15 +97,14 @@ class PathDefinition
     }
 
     /**
-     * @return array
-     *
+     * @return array<string, mixed>
      */
-    public function asArray()
+    public function asArray(): array
     {
         return [
-            self::PROPERTY_FILENAME => $this->getFileName(),
-            self::PROPERTY_PATH => $this->getPropertyPath(),
-            self::PROPERTY_KEY => $this->getKey()
+            self::PROPERTY_FILENAME => $this->fileName,
+            self::PROPERTY_PATH => $this->propertyPath,
+            self::PROPERTY_KEY => $this->key
         ];
     }
 
@@ -101,7 +112,7 @@ class PathDefinition
      * @param $path
      * @return mixed
      */
-    public function getFullPath($path)
+    public function getFullPath($path): string
     {
         $tokens = explode('.', $path);
         array_walk($tokens, function ($token) {
