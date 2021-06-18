@@ -21,7 +21,7 @@ final class LarasedApplication extends Application
     /**
      * LarasedApplication constructor.
      */
-    public function __construct(string $name = 'Larased', string $version = '0.0.3')
+    public function __construct(string $name = 'Larased', string $version = '0.0.4')
     {
         parent::__construct($name, $version);
 
