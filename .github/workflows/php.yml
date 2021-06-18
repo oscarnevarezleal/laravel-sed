@@ -48,6 +48,8 @@ jobs:
         shell: bash
 
   rector:
+    runs-on: ubuntu-latest
+    needs: test
     steps:
       - uses: actions/checkout@v2
       - name: Cache Composer packages
