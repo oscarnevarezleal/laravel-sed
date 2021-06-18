@@ -34,10 +34,23 @@ Available commands:
 
 ### Commands
 
+| Command        |Description                          |Arguments                         |
+|----------------|-------------------------------|-----------------------------|
+|larased:config-edit | Replace configuration value            | `$config-path $value [options]`|
+
+### Options
+| Short version  |Long version                   | Comments                    |
+|----------------|-------------------------------|-----------------------------|
+|-d              | --basePath                  | The working directory |
+|-e              | --envor                       | When this option is specified, the substitution will have a call to the _env_ function using as 1st argument the value taken from the environment key specified and secondly a literal value or another _env_ call when using chained envs (See Environment chain in the examples section ) |
+
+## Concepts
+Before dive in into the examples, a previous step is to clarify what a config path is so you know how to use it when editing Laravel configuration files.
+
 > **Config Paths**
 >
 > Most of the commands expect a valid `config-path` to work with.
-> 
+>
 > Config paths consists of two parts joined by a slash.
 >
 > The first part is the relative path of the file to be modified seen from the root of the project and, without especial characters nor file extensions.
@@ -49,16 +62,8 @@ Available commands:
 > A property _name_ in `./config/app.php` became the config path  `config.app/name`
 >
 > A nested property such as the user in a mysql connection configured in `./config/database.php` became the `config.database/connections.mysql.user`
+>
 > 
-| Command        |Description                          |Arguments                         |
-|----------------|-------------------------------|-----------------------------|
-|larased:config-edit | Replace configuration value            | `$config-path $value [options]`|
-
-### Options
-| Option         |ASCII                          | Comments                    |
-|----------------|-------------------------------|-----------------------------|
-|-e --envor        |`EnvOr`            | When this option is specified, the result will be a call to _env_ function using primarily the value taken from the environment key specified under the parameter and secondarily a default value specified under the `value|-v` parameters. Example: `'env' => env('APP_ENV', 'production')`|
-
 ## Examples
 
 ### Literal values
@@ -174,10 +179,10 @@ alias larased='docker run --rm -it -v `pwd`:/var/laraseed:ro laravel-sed:latest'
 
 ```bash
 #windows
-docker run --rm -it -v ${PWD}:/var/laraseed:ro laravel-sed:latest config.edit faker_locale es_MX  
+docker run --rm -it -v ${PWD}:/var/laraseed:ro laravel-sed:latest config.app/name my-awesome-app 
 
 #linux and MacOS
-docker run --rm -it -v `pwd`:/var/laraseed:ro laravel-sed:latest config.edit faker_locale es_MX  
+docker run --rm -it -v `pwd`:/var/laraseed:ro laravel-sed:latest config.app/name my-awesome-app   
 ```
 
 ## Known Drawbacks
