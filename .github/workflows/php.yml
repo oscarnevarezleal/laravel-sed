@@ -64,7 +64,7 @@ jobs:
         with:
           php-version: 8.0
       - uses: "ramsey/composer-install@v1"
-      - run: vendor/bin/rector process --ansi
+      - run: vendor/bin/rector process src --dry-run --ansi
       - run: vendor/ecs check --match-git-diff --fix --ansi
       - uses: EndBug/add-and-commit@v5.1.0
         with:
