@@ -8,9 +8,11 @@
 
 namespace Laraboot\Visitor;
 
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\ArrayItem;
+use PhpParser\Node\Expr\Array_;
 use PhpParser\{Node};
 use PhpParser\BuilderFactory;
-use PhpParser\Node\Expr\{Array_, ArrayItem};
 use PhpParser\Node\Scalar\String_;
 use PhpParser\NodeVisitorAbstract;
 
@@ -25,7 +27,6 @@ class AppendArrayItemClassAssociationVisitor extends NodeVisitorAbstract
 
     /**
      * AppendArrayValueVisitor constructor.
-     * @param array $options
      */
     public function __construct(array $options)
     {
@@ -47,8 +48,6 @@ class AppendArrayItemClassAssociationVisitor extends NodeVisitorAbstract
 
     /**
      * @param ArrayItem $arrayItem
-     * @param string $name
-     * @return bool
      */
     private function hasKeyName(ArrayItem $arrayItem, string $name): bool
     {

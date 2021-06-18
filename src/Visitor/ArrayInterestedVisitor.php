@@ -31,7 +31,6 @@ class ArrayInterestedVisitor extends NodeVisitorAbstract
 
     /**
      * ChangeArrayValueVisitor constructor.
-     * @param string $searchKey
      */
     public function __construct(string $searchKey)
     {
@@ -83,7 +82,7 @@ class ArrayInterestedVisitor extends NodeVisitorAbstract
             return false;
         }
 
-        $currentPath = join('.', $this->stack);
+        $currentPath = implode('.', $this->stack);
 
         return $search === $currentPath;
     }
@@ -94,7 +93,7 @@ class ArrayInterestedVisitor extends NodeVisitorAbstract
             return false;
 
         $searchKey = $this->searchKey;
-        $currentPath = join('.', $this->stack);
+        $currentPath = implode('.', $this->stack);
         $pos = stripos($searchKey, $currentPath);
         return $pos !== false;
     }

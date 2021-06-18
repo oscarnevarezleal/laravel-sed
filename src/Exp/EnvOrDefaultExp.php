@@ -13,9 +13,9 @@ class EnvOrDefaultExp extends Stmt
     /** @var Expr Value to pass */
     public $value;
     /** @var bool Whether to pass by ref */
-    public $byRef;
+    public $byRef = false;
     /** @var bool Whether to unpack the argument */
-    public $unpack;
+    public $unpack = false;
 
     public function getSubNodeNames(): array
     {

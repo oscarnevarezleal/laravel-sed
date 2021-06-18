@@ -29,7 +29,6 @@ class ChangeArrayValueVisitor extends NodeVisitorAbstract
 
     /**
      * ChangeArrayValueVisitor constructor.
-     * @param VisitorContext $VisitorContext
      */
     public function __construct(VisitorContext $VisitorContext)
     {
@@ -37,7 +36,6 @@ class ChangeArrayValueVisitor extends NodeVisitorAbstract
     }
 
     /**
-     * @param array $options
      * @return AppendArrayItemsVisitor
      */
     public function fromArray(array $options): self

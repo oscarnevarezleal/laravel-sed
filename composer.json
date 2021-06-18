@@ -52,6 +52,7 @@
     "symfony/form": "^5.2.0",
     "symfony/workflow": "^5.2.0",
     "symfony/debug-bundle": "^5.2",
-    "symfony/maker-bundle": "^1.11"
+    "symfony/maker-bundle": "^1.11",
+    "symplify/easy-coding-standard": "^9.3"
   }
 }

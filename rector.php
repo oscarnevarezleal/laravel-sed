@@ -17,8 +17,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         __DIR__ . '/vendor/autoload.php',
     ]);
 
-    $containerConfigurator->import(SetList::CODE_QUALITY);
-
     // paths to refactor; solid alternative to CLI arguments
     $parameters->set(Option::PATHS, [__DIR__ . '/src', __DIR__ . '/tests']);
 
@@ -30,7 +28,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     ]);
 
     // here we can define, what sets of rules will be applied
-    $parameters->set(Option::SETS, [SetList::CODE_QUALITY, SetList::DEAD_CODE, SetList::PHP_73]);
+    $containerConfigurator->import(SetList::PHP_73);
+    $containerConfigurator->import(SetList::CODE_QUALITY);
+    $containerConfigurator->import(SetList::CODE_QUALITY_STRICT);
+    $containerConfigurator->import(SetList::CODING_STYLE);
+    $containerConfigurator->import(SetList::DEAD_CODE);
+
     // auto import fully qualified class names? [default: false]
     $parameters->set(Option::AUTO_IMPORT_NAMES, true);
     // skip root namespace classes, like \DateTime or \Exception [default: true]
