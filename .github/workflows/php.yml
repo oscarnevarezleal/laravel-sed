@@ -2,9 +2,9 @@ name: PHP Composer
 
 on:
   push:
-    branches: [ dev, 'bugfix/*', 'feature/*' ]
+    branches: [ dev, main ]
   pull_request:
-    branches: [ dev ]
+    branches: [ main ]
 
 jobs:
   test:
@@ -21,11 +21,10 @@ jobs:
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-php-
-
-      - name: Install dependencies
-        if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: composer install --prefer-dist --no-progress --no-suggest
-
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      - uses: "ramsey/composer-install@v1"
       - name: Prepare tests
         run: composer create-project laravel/laravel sample-apps/laravel-app
 
@@ -33,7 +32,7 @@ jobs:
         run: |
           composer install
           vendor/bin/phpunit --configuration=phpunit.xml
-      
+
       - name: Test Bin
         run: |
           php larased
@@ -48,9 +47,33 @@ jobs:
           echo "::set-output name=PACKAGE_VERSION::$output"
         shell: bash
 
+  rector:
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      - uses: "ramsey/composer-install@v1"
+      - run: vendor/bin/rector process --ansi
+      - run: vendor/ecs check --match-git-diff --fix --ansi
+      - uses: EndBug/add-and-commit@v5.1.0
+        with:
+          add: .
+          message: "[ci-review] Apply Rector"
+          author_name: "GitHub Actions"
+          author_email: "action@github.com"
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
   release:
     name: Create Release
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: test
     steps:
