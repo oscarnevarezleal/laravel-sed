@@ -46,9 +46,6 @@ class AppendArrayItemClassAssociationVisitor extends NodeVisitorAbstract
         }
     }
 
-    /**
-     * @param ArrayItem $arrayItem
-     */
     private function hasKeyName(ArrayItem $arrayItem, string $name): bool
     {
         return $arrayItem->key instanceof String_ && $arrayItem->key->value === $name;
