@@ -2,7 +2,7 @@ name: PHP Composer
 
 on:
   push:
-    branches: [ dev, main ]
+    branches: [ dev, main, feature/*, bugfix/* ]
   pull_request:
     branches: [ main ]
 
