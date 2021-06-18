@@ -1,4 +1,13 @@
 <?php
+/*
+ * Copyright (c) 2021. Oscar Nevarez Leal <fu.wire@gmail.com>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 
 namespace Laraboot\Commands;
 
@@ -20,22 +29,23 @@ use function sprintf;
 /**
  * Class EditConfigFileCommand
  * @package Laraboot\Commands
+ * @noRector \Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector
  */
 class EditConfigFileCommand extends EditCommand
 {
     // the name of the command (the part after "bin/console")
+    /**
+     * @var string
+     */
     protected static $defaultName = 'larased:config-edit';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Edits a config file');
         $this->setDefinition(new CliInputDefinition());
     }
 
-    /**
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
 
         $pathValue = $input->getArgument(TopLevelInputConfig::INPUT_PATH_KEY);
@@ -78,7 +88,7 @@ class EditConfigFileCommand extends EditCommand
     }
 
     /**
-     * @return string[]
+     * @return array<class-string<NodeConnectingVisitor>>
      */
     protected function getVisitors(): array
     {
