@@ -17,7 +17,7 @@ use PhpParser\NodeVisitorAbstract;
  * Class ChangeArrayValueVisitor
  * @package Laraboot\Visitor
  */
-class AppendArrayItemsVisitor extends NodeVisitorAbstract
+final class AppendArrayItemsVisitor extends NodeVisitorAbstract
 {
     /**
      * @var VisitorContext $context
@@ -32,10 +32,7 @@ class AppendArrayItemsVisitor extends NodeVisitorAbstract
         $this->context = $context;
     }
 
-    /**
-     * @return AppendArrayItemsVisitor
-     */
-    public function fromArray(array $options)
+    public function fromArray(array $options): \Laraboot\Visitor\AppendArrayItemsVisitor
     {
         return new self(VisitorContext::fromArray($options));
     }
@@ -64,8 +61,7 @@ class AppendArrayItemsVisitor extends NodeVisitorAbstract
             $node->items = $items;
             return $node;
 
-        } else {
-            return $node;
         }
+        return $node;
     }
 }

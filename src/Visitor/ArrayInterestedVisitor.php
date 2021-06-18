@@ -50,9 +50,13 @@ class ArrayInterestedVisitor extends NodeVisitorAbstract
      */
     public function enterNode(Node $node)
     {
-        if ($node instanceof ArrayItem && $node->key instanceof String_) {
-            $this->stack[] = $node->key->value;
+        if (!$node instanceof ArrayItem) {
+            return;
         }
+        if (!$node->key instanceof String_) {
+            return;
+        }
+        $this->stack[] = $node->key->value;
     }
 
     protected function clearPath()
@@ -71,10 +75,7 @@ class ArrayInterestedVisitor extends NodeVisitorAbstract
         }
     }
 
-    /**
-     * @return bool
-     */
-    protected function matchPath()
+    protected function matchPath(): bool
     {
         $search = $this->searchKey;
 
@@ -87,7 +88,7 @@ class ArrayInterestedVisitor extends NodeVisitorAbstract
         return $search === $currentPath;
     }
 
-    protected function partialMatch()
+    protected function partialMatch(): bool
     {
         if (count($this->stack) == 0)
             return false;

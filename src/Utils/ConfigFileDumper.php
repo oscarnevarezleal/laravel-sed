@@ -3,19 +3,27 @@
 
 namespace Laraboot\Utils;
 
+use PhpParser\Parser;
 use Laraboot\Schema\VisitorContext;
 use Laraboot\Visitor\AppendArrayItemsVisitor;
 use PhpParser\{NodeTraverser};
 use PhpParser\ParserFactory;
 use PhpParser\PrettyPrinter\Standard;
 
-class ConfigFileDumper
+final class ConfigFileDumper
 {
+    /**
+     * @var Parser
+     */
     private $parser;
     /**
      * @var VisitorContext $context
      */
     private $context;
+    /**
+     * @var string
+     */
+    private const BOILER_PLATE = '<?php return []; ';
 
     /**
      * ConfigFileDumper constructor.
@@ -29,7 +37,7 @@ class ConfigFileDumper
         }
     }
 
-    public function getContext(): ?VisitorContext
+    public function getContext(): VisitorContext
     {
         return $this->context;
     }
@@ -50,9 +58,7 @@ class ConfigFileDumper
             $traverser->addVisitor($visitor);
         }
 
-        $boilerPlate = '<?php return []; ';
-
-        $stmts = $this->parser->parse($boilerPlate);
+        $stmts = $this->parser->parse(self::BOILER_PLATE);
 
         $ast = $traverser->traverse($stmts);
 
@@ -60,9 +66,9 @@ class ConfigFileDumper
     }
 
     /**
-     * @return mixed
+     * @return array<class-string<AppendArrayItemsVisitor>>
      */
-    protected function getVisitors()
+    protected function getVisitors(): array
     {
         return [
             AppendArrayItemsVisitor::class

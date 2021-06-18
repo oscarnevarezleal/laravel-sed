@@ -24,18 +24,18 @@ use function sprintf;
 class EditConfigFileCommand extends EditCommand
 {
     // the name of the command (the part after "bin/console")
+    /**
+     * @var string
+     */
     protected static $defaultName = 'larased:config-edit';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Edits a config file');
         $this->setDefinition(new CliInputDefinition());
     }
 
-    /**
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
 
         $pathValue = $input->getArgument(TopLevelInputConfig::INPUT_PATH_KEY);
@@ -78,7 +78,7 @@ class EditConfigFileCommand extends EditCommand
     }
 
     /**
-     * @return string[]
+     * @return array<class-string<NodeConnectingVisitor>>
      */
     protected function getVisitors(): array
     {

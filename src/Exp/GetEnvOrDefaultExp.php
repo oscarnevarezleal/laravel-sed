@@ -9,7 +9,7 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Scalar\String_;
 use function array_pop;
 
-class GetEnvOrDefaultExp
+final class GetEnvOrDefaultExp
 {
     /**
      * Returns `[ $key => env($envName, $defaultValue) ]`
@@ -23,7 +23,7 @@ class GetEnvOrDefaultExp
      * Returns `[ $key => env($envName, env($envName, env($envName, $defaultValue))) ]`
      * @param string $defaultValue
      */
-    public static function chainOfEnvCallsWithDefault(string $key, array $envs, string $default)
+    public static function chainOfEnvCallsWithDefault(string $key, array $envs, string $default): ?FuncCall
     {
         // todo
         unset($key);
@@ -34,7 +34,7 @@ class GetEnvOrDefaultExp
     /**
      * @param string|null $key
      * @param null $carry
-     * @return FuncCall|null
+     * @return FuncCall|null|void
      */
     private static function getRecursion(array $envs, string $default, string $key = null, $carry = null)
     {
@@ -45,8 +45,7 @@ class GetEnvOrDefaultExp
                 $recursion = $recursion !== null ? self::getRecursion($envs, $default, $current, $recursion) : $factory->funcCall('env', [$current, $default]);
             }
             return $recursion;
-        } else {
-            return $factory->funcCall('env', [$key, $carry]);
         }
+        return $factory->funcCall('env', [$key, $carry]);
     }
 }

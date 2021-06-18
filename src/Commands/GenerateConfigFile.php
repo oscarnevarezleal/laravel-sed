@@ -15,12 +15,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class EditConfigFileCommand
  * @package Laraboot\Commands
  */
-class GenerateConfigFile extends EditCommand
+final class GenerateConfigFile extends EditCommand
 {
     // the name of the command (the part after "bin/console")
+    /**
+     * @var string
+     */
     protected static $defaultName = 'larased:config-gen';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Config file generator');
         $this->addArgument(TopLevelInputConfig::INPUT_FILENAME_KEY, InputArgument::REQUIRED, 'The name of the config file');
@@ -29,10 +32,7 @@ class GenerateConfigFile extends EditCommand
             , '');
     }
 
-    /**
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
 
         $context = $this->getVisitorContext($input);

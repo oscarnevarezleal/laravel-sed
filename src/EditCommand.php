@@ -45,9 +45,12 @@ class EditCommand extends Command
         return new VisitorContext($pathDef, $inputContext);
     }
 
+    /**
+     * @return EnvOrDefaultExp[]
+     */
     protected function getEnvOrDefaultExps(?array $values): array
     {
-        return array_map(function ($el) {
+        return array_map(function ($el): EnvOrDefaultExp {
             $orEnv = null;
             list($key, $value) = explode('=', $el);
 //            echo $value . "\n";
@@ -73,10 +76,7 @@ class EditCommand extends Command
         }, $values);
     }
 
-    /**
-     * @return string
-     */
-    public function getAppDirectory()
+    public function getAppDirectory(): string
     {
         return function_exists('base_path') ?
             base_path() : dirname(__DIR__);

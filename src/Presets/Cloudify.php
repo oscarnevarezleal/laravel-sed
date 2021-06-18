@@ -13,17 +13,17 @@ use Laraboot\Utils\ConfigFileDumper;
  * Class Cloudify
  * @package Laraboot\Presets
  */
-class Cloudify extends PresetBase
+final class Cloudify extends PresetBase
 {
     /**
-     * @return string[]
+     * @return array<class-string<ConfigFileDumper>>
      */
     function getVisitors(): array
     {
         return [ConfigFileDumper::class];
     }
 
-    public function execute()
+    public function execute(): void
     {
         echo 'executing';
 

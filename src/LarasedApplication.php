@@ -7,7 +7,7 @@ use Laraboot\Commands\EditConfigFileCommand;
 use Laraboot\Commands\GenerateConfigFile;
 use Symfony\Component\Console\Application;
 
-class LarasedApplication extends Application
+final class LarasedApplication extends Application
 {
     /**
      * LarasedApplication constructor.

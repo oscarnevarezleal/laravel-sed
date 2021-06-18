@@ -12,10 +12,13 @@ use Laraboot\Utils\ConfigFileDumper;
  */
 abstract class PresetBase implements IPreset
 {
+    /**
+     * @var mixed|null
+     */
     private $context;
 
     /**
-     * @return mixed
+     * @return mixed|null
      */
     public function getContext()
     {
@@ -29,7 +32,7 @@ abstract class PresetBase implements IPreset
 
     abstract public function execute();
 
-    public function setContext($context)
+    public function setContext($context): void
     {
         $this->context = $context;
     }

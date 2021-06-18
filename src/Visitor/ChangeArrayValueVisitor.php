@@ -20,7 +20,7 @@ use PhpParser\NodeVisitorAbstract;
  * Class ChangeArrayValueVisitor
  * @package Laraboot\Visitor
  */
-class ChangeArrayValueVisitor extends NodeVisitorAbstract
+final class ChangeArrayValueVisitor extends NodeVisitorAbstract
 {
     /**
      * @var VisitorContext $VisitorContext
@@ -64,10 +64,9 @@ class ChangeArrayValueVisitor extends NodeVisitorAbstract
                         // In the form of '$key' => env($env, $default);
                         list($env, $default) = explode('|', $context[VisitorContext::ENV_OR_KEY]);
                         return new ArrayItem(HelperExpressions::envOrDefault($env, $default), $node->key);
-                    } else {
-                        return new ArrayItem(HelperExpressions::envOrDefault($context[VisitorContext::ENV_OR_KEY]
-                            , $context[VisitorContext::VALUE_KEY]), $node->key);
                     }
+                    return new ArrayItem(HelperExpressions::envOrDefault($context[VisitorContext::ENV_OR_KEY]
+                        , $context[VisitorContext::VALUE_KEY]), $node->key);
 
                 } else {
                     // return a new Array item expression

@@ -18,13 +18,20 @@ use PhpParser\NodeVisitorAbstract;
  * Class AppendArrayValueVisitor
  * @package Laraboot\Visitor
  */
-class AppendArrayValueVisitor extends NodeVisitorAbstract
+final class AppendArrayValueVisitor extends NodeVisitorAbstract
 {
+    /**
+     * @var mixed[]
+     */
     private $options;
+    /**
+     * @var BuilderFactory
+     */
     private $builder;
 
     /**
      * AppendArrayValueVisitor constructor.
+     * @param mixed[] $options
      */
     public function __construct(array $options)
     {

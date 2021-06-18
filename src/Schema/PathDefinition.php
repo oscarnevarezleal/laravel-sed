@@ -8,7 +8,7 @@ use function array_pop;
 use function array_walk;
 use function explode;
 
-class PathDefinition
+final class PathDefinition
 {
     /**
      * @var string
@@ -85,15 +85,14 @@ class PathDefinition
     }
 
     /**
-     * @return array
-     *
+     * @return array<string, mixed>
      */
-    public function asArray()
+    public function asArray(): array
     {
         return [
-            self::PROPERTY_FILENAME => $this->getFileName(),
-            self::PROPERTY_PATH => $this->getPropertyPath(),
-            self::PROPERTY_KEY => $this->getKey()
+            self::PROPERTY_FILENAME => $this->fileName,
+            self::PROPERTY_PATH => $this->propertyPath,
+            self::PROPERTY_KEY => $this->key
         ];
     }
 
@@ -101,7 +100,7 @@ class PathDefinition
      * @param $path
      * @return mixed
      */
-    public function getFullPath($path)
+    public function getFullPath($path): string
     {
         $tokens = explode('.', $path);
         array_walk($tokens, function ($token) {

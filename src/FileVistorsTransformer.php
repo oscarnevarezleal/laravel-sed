@@ -3,20 +3,27 @@
 
 namespace Laraboot;
 
+use PhpParser\Parser;
 use Laraboot\Schema\VisitorContext;
 use PhpParser\{NodeTraverser};
 use PhpParser\Node\Stmt;
 use PhpParser\ParserFactory;
 use PhpParser\PrettyPrinter\Standard;
 
-class FileVistorsTransformer
+final class FileVistorsTransformer
 {
     /**
      * @var mixed[]|mixed
      */
-    public $visitors;
+    private $visitors;
+    /**
+     * @var Parser
+     */
     private $parser;
 
+    /**
+     * @var string
+     */
     private $filename;
 
     /**
@@ -57,7 +64,7 @@ class FileVistorsTransformer
 
     /**
      * @param string $filePath
-     * @return false|string
+     * @return string|bool
      */
     public function readFilePath()
     {
@@ -76,9 +83,8 @@ class FileVistorsTransformer
 
     /**
      * @param $visitor
-     * @return FileVistorsTransformer
      */
-    public function addVisitor($visitor)
+    public function addVisitor($visitor): self
     {
         $this->visitors[] = $visitor;
         return $this;

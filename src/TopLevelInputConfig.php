@@ -2,7 +2,7 @@
 
 namespace Laraboot;
 
-class TopLevelInputConfig
+final class TopLevelInputConfig
 {
     /**
      * @var string

@@ -6,7 +6,7 @@ use Laraboot\Commands\EditConfigFileCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class ConfigEditCommand extends EditConfigFileCommand
+final class ConfigEditCommand extends EditConfigFileCommand
 {
     /**
      * The Laravel application instance.

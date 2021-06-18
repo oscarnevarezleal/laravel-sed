@@ -5,7 +5,7 @@ namespace Laraboot\Schema;
 
 use Laraboot\TopLevelInputConfig;
 
-class VisitorContext
+final class VisitorContext
 {
     /**
      * @var string
@@ -34,6 +34,9 @@ class VisitorContext
     const PATH_KEY = 'path';
 
     // PathDefinition or nulls
+    /**
+     * @var PathDefinition|null
+     */
     private $pathDefinition;
 
     public function getPathDefinition(): PathDefinition
@@ -41,13 +44,22 @@ class VisitorContext
         return $this->pathDefinition;
     }
 
+    /**
+     * @var mixed[]|mixed
+     */
     private $context;
 
+    /**
+     * @param mixed[] $context
+     */
     public function setContext(array $context): void
     {
         $this->context = $context;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getContext(): array
     {
         return $this->context;
@@ -56,6 +68,7 @@ class VisitorContext
     /**
      * VisitorContext constructor.
      * @param PathDefinition|null $pathDefinition
+     * @param mixed[] $context
      */
     public function __construct(PathDefinition $pathDefinition = null, array $context = [])
     {
@@ -63,10 +76,7 @@ class VisitorContext
         $this->context = $context;
     }
 
-    /**
-     * @return VisitorContext
-     */
-    public static function fromArray(array $a = [])
+    public static function fromArray(array $a = []): \Laraboot\Schema\VisitorContext
     {
         return new self(null, $a);
     }

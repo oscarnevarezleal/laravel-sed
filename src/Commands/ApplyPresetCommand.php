@@ -15,39 +15,36 @@ use function sprintf;
  * Class EditConfigFileCommand
  * @package Laraboot\Commands
  */
-class ApplyPresetCommand extends EditCommand
+final class ApplyPresetCommand extends EditCommand
 {
     // the name of the command (the part after "bin/console")
+    /**
+     * @var string
+     */
     protected static $defaultName = 'larased:apply-preset';
 
     /**
      * @return []
      */
-    private function getPresets()
+    private function getPresets(): array
     {
         return [
             'cloudify' => (new Cloudify())
         ];
     }
 
-    /**
-     * @return bool
-     */
-    function presetExist(string $name)
+    function presetExist(string $name): bool
     {
         return isset($this->getPresets()[$name]);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Cloudify a configuration folder');
         $this->addArgument('name', InputArgument::REQUIRED, 'The name of the preset to run');
     }
 
-    /**
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
 
         $presetName = $input->getArgument('name');

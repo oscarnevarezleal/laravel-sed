@@ -8,8 +8,11 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 
-class CliInputDefinition extends InputDefinition
+final class CliInputDefinition extends InputDefinition
 {
+    /**
+     * @return mixed[]
+     */
     private static function defaultDefinition(): array
     {
         //

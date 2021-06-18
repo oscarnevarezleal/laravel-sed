@@ -12,7 +12,7 @@ use PhpParser\{BuilderFactory, Node};
 use PhpParser\Node\Expr\FuncCall;
 
 
-class HelperExpressions
+final class HelperExpressions
 {
 
     /**

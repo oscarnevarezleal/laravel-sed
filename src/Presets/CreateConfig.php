@@ -11,19 +11,22 @@ use Laraboot\IPreset;
  * Class Cloudify
  * @package Laraboot\Presets
  */
-class CreateConfig implements IPreset
+final class CreateConfig implements IPreset
 {
+    /**
+     * @return mixed[]
+     */
     function getVisitors(): array
     {
         return [];
     }
 
-    function setContext($context)
+    function setContext($context): void
     {
         // TODO: Implement setContext() method.
     }
 
-    function execute()
+    function execute(): void
     {
         // TODO: Implement execute() method.
     }
