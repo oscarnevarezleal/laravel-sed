@@ -2,14 +2,11 @@ name: PHP Composer
 
 on:
   push:
-    branches: [ dev, main, feature/*, bugfix/* ]
-  pull_request:
-    branches: [ main ]
+    branches: [ dev, feature/*, bugfix/* ]
 
 jobs:
   rector-test-commit:
     runs-on: ubuntu-latest
-    needs: test
     steps:
       - uses: actions/checkout@v2
       - name: Cache Composer packages
