@@ -10,9 +10,6 @@ use Symfony\Component\Console\Input\InputOption;
 
 class CliInputDefinition extends InputDefinition
 {
-    /**
-     * @return array
-     */
     private static function defaultDefinition(): array
     {
         //

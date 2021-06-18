@@ -24,11 +24,9 @@ class ChangeNestedArrayValueVisitor extends ArrayInterestedVisitor
      * @var VisitorContext $visitorContext
      */
     private $visitorContext;
-    private $searchKey;
 
     /**
      * ChangeArrayValueVisitor constructor.
-     * @param VisitorContext $context
      */
     public function __construct(VisitorContext $context)
     {
@@ -39,10 +37,6 @@ class ChangeNestedArrayValueVisitor extends ArrayInterestedVisitor
         $this->visitorContext = $context;
     }
 
-    /**
-     * @param array $options
-     * @return ChangeNestedArrayValueVisitor
-     */
     public function fromArray(array $options): self
     {
         return new self(VisitorContext::fromArray($options));
@@ -60,8 +54,7 @@ class ChangeNestedArrayValueVisitor extends ArrayInterestedVisitor
         $context = $this->visitorContext->getContext();
         $replaceValue = $context[VisitorContext::VALUE_KEY];
 
-        if ($node instanceof ArrayItem &&
-            $this->matchPath()) {
+        if ($node instanceof ArrayItem && $this->matchPath()) {
             // clear the found path
             $this->clearPath();
             if (isset($context[VisitorContext::ENV_OR_KEY])) {

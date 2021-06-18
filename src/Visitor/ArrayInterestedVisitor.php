@@ -31,7 +31,6 @@ class ArrayInterestedVisitor extends NodeVisitorAbstract
 
     /**
      * ChangeArrayValueVisitor constructor.
-     * @param string $searchKey
      */
     public function __construct(string $searchKey)
     {
@@ -77,13 +76,15 @@ class ArrayInterestedVisitor extends NodeVisitorAbstract
      */
     protected function matchPath()
     {
+        $search = $this->searchKey;
+
         if (count($this->stack) == 0) {
             return false;
         }
 
-        $currentPath = join('.', $this->stack);
+        $currentPath = implode('.', $this->stack);
 
-        return $this->searchKey === $currentPath;
+        return $search === $currentPath;
     }
 
     protected function partialMatch()
@@ -92,7 +93,7 @@ class ArrayInterestedVisitor extends NodeVisitorAbstract
             return false;
 
         $searchKey = $this->searchKey;
-        $currentPath = join('.', $this->stack);
+        $currentPath = implode('.', $this->stack);
         $pos = stripos($searchKey, $currentPath);
         return $pos !== false;
     }

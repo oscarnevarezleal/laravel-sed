@@ -17,7 +17,6 @@ class EditCommand extends Command
     /**
      * Splits the path into tokens and initialize a PathDefinition with those tokens
      * @param string|null $path
-     * @return PathDefinition
      */
     protected function getPathDefinition(string $path): PathDefinition
     {
@@ -25,17 +24,17 @@ class EditCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
      * @param PathDefinition|null $pathDef
-     * @return VisitorContext
      */
     protected function getVisitorContext(InputInterface $input
-        , \Laraboot\Schema\PathDefinition $pathDef = null): VisitorContext
+        , PathDefinition $pathDef = null): VisitorContext
     {
         $inputContext = array_merge($input->getArguments(), $input->getOptions());
 
-        $mode = substr_count($inputContext[VisitorContext::PATH_KEY], '.') >= 1 ?
-            'nested' : 'default';
+        // e.g config.hashing/bcrypt.rounds
+        $rightSide = explode('/', $inputContext[VisitorContext::PATH_KEY])[1];
+
+        $mode = substr_count($rightSide, '.') > 0 ? 'nested' : 'default';
 
         $inputContext[VisitorContext::MODE] = $mode;
 
@@ -46,10 +45,6 @@ class EditCommand extends Command
         return new VisitorContext($pathDef, $inputContext);
     }
 
-    /**
-     * @param array|null $values
-     * @return array
-     */
     protected function getEnvOrDefaultExps(?array $values): array
     {
         return array_map(function ($el) {

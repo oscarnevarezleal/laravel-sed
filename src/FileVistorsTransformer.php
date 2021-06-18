@@ -26,8 +26,6 @@ class FileVistorsTransformer
 
     /**
      * FileVistorsTransformer constructor.
-     * @param string $filename
-     * @param array $visitors
      * @param array $options
      */
     public function __construct(string $filename, array $visitors, VisitorContext $visitorContext)
@@ -40,9 +38,6 @@ class FileVistorsTransformer
     }
 
 
-    /**
-     * @return string
-     */
     public function transform(): string
     {
         $traverser = new NodeTraverser();

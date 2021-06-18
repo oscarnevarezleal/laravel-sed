@@ -31,7 +31,6 @@ class ApplyPresetCommand extends EditCommand
     }
 
     /**
-     * @param string $name
      * @return bool
      */
     function presetExist(string $name)
@@ -46,8 +45,6 @@ class ApplyPresetCommand extends EditCommand
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -75,9 +72,6 @@ class ApplyPresetCommand extends EditCommand
         return Command::SUCCESS;
     }
 
-    /**
-     * @param string $presetName
-     */
     private function getPreset(string $presetName)
     {
         $className = $this->getPresets()[$presetName];
