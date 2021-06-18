@@ -38,12 +38,15 @@ final class PathDefinition
      */
     const PROPERTY_PATH = TopLevelInputConfig::INPUT_PATH_KEY;
 
+    /**
+     * @var string
+     */
     private $fileName;
 
     /**
      * @return mixed
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->fileName;
     }

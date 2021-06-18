@@ -28,7 +28,7 @@ final class AppendArrayItemClassAssociationVisitor extends NodeVisitorAbstract
     /**
      * @var mixed[]
      */
-    private $options;
+    private $options = [];
     /**
      * @var BuilderFactory
      */

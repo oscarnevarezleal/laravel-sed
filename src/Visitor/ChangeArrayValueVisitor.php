@@ -71,11 +71,10 @@ final class ChangeArrayValueVisitor extends NodeVisitorAbstract
                     return new ArrayItem(HelperExpressions::envOrDefault($context[VisitorContext::ENV_OR_KEY]
                         , $context[VisitorContext::VALUE_KEY]), $node->key);
 
-                } else {
-                    // return a new Array item expression
-                    // we kep the same key but the value changed.
-                    return new ArrayItem(new String_($replaceValue), $node->key);
                 }
+                // return a new Array item expression
+                // we kep the same key but the value changed.
+                return new ArrayItem(new String_($replaceValue), $node->key);
             } else {
                 return $node;
             }

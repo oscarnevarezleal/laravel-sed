@@ -77,7 +77,7 @@ final class ConfigFileDumper
     /**
      * @return array<class-string<AppendArrayItemsVisitor>>
      */
-    protected function getVisitors(): array
+    private function getVisitors(): array
     {
         return [
             AppendArrayItemsVisitor::class

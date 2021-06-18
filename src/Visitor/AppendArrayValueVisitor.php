@@ -26,7 +26,7 @@ final class AppendArrayValueVisitor extends NodeVisitorAbstract
     /**
      * @var mixed[]
      */
-    private $options;
+    private $options = [];
     /**
      * @var BuilderFactory
      */
