@@ -1,6 +1,6 @@
 # Laravel SED  
 
-This is a CLI utility that helps in the aid of replacing values or expressions in Laravel config files.
+A CLI utility that modifies [Laravel](https://laravel.com/docs/8.x/#initial-configuration) configuration files.
   
 > **Note:**  This project is primarily intended as CLI tool to manage laravel applications from the outside, although it contains several laravel commands expect that the majority of features will be unavailable as Laravel commands.
 
