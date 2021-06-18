@@ -29,6 +29,7 @@ use function sprintf;
 /**
  * Class EditConfigFileCommand
  * @package Laraboot\Commands
+ * @noRector \Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector
  */
 class EditConfigFileCommand extends EditCommand
 {
