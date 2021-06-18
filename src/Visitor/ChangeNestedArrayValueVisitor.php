@@ -8,6 +8,7 @@
 
 namespace Laraboot\Visitor;
 
+use Laraboot\Exp\GetEnvOrDefaultExp;
 use Laraboot\Schema\VisitorContext;
 use Laraboot\Utils\HelperExpressions;
 use PhpParser\{Node as NodeAlias};
@@ -61,8 +62,13 @@ class ChangeNestedArrayValueVisitor extends ArrayInterestedVisitor
                 // Return a function call expression
                 if (stripos($context[VisitorContext::ENV_OR_KEY], '|') !== false) {
                     // In the form of '$key' => env($env, $default);
-                    list($env, $default) = explode('|', $context[VisitorContext::ENV_OR_KEY]);
-                    return new ArrayItem(HelperExpressions::envOrDefault($env, $default), $node->key);
+                    $tokens = explode('|', $context[VisitorContext::ENV_OR_KEY]);
+                    $keyValue = $node->key->value;
+                    // Two options , simple env(K, value) or env(env(env(..., default)))
+                    return new ArrayItem(
+                        GetEnvOrDefaultExp::chainOfEnvCallsWithDefault($keyValue, $tokens, $replaceValue)
+                        , new NodeAlias\Scalar\String_($keyValue));
+
                 } else {
                     return new ArrayItem(HelperExpressions::envOrDefault($context[VisitorContext::ENV_OR_KEY]
                         , $context[VisitorContext::VALUE_KEY]), $node->key);

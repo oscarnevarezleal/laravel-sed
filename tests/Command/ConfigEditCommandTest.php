@@ -3,6 +3,7 @@
 namespace Tests\Command;
 
 use Laraboot\Commands\EditConfigFileCommand;
+use PhpParser\{ParserFactory, PrettyPrinter\Standard};
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -12,8 +13,13 @@ class ConfigEditCommandTest extends KernelTestCase
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
+
         $fixture = self::fixturesFolder() . '/app/config/custom.php';
         $destination = self::getSampleAppPath() . '/config/custom.php';
+        file_put_contents($destination, file_get_contents($fixture), LOCK_EX);
+
+        $fixture = self::fixturesFolder() . '/app/config/env.php';
+        $destination = self::getSampleAppPath() . '/config/env.php';
         file_put_contents($destination, file_get_contents($fixture), LOCK_EX);
     }
 
@@ -34,6 +40,17 @@ class ConfigEditCommandTest extends KernelTestCase
     }
 
     /**
+     * A set of config path, values, flags and expectations
+     */
+    public function pathValuesAndFlagsDataProvider(): ?\Generator
+    {
+        yield ['config.env/env.a.b.c.d',
+            "500",
+            ['-e' => "A|B|C|D"],
+            "return ['env' => ['a' => ['b' => ['c' => ['d' => env('A', env('B', env('C', env('D', '500'))))]]]]];"];
+    }
+
+    /**
      * @dataProvider pathAndValuesDataProvider
      *
      * This test provides all the arguments required by the command, so the
@@ -43,23 +60,41 @@ class ConfigEditCommandTest extends KernelTestCase
     {
         $inputs = ['path' => $path, 'value' => $value ?? 'newValue'];
 
-        $this->executeCommand([], $inputs);
+        $this->executeCommand($inputs);
 
         $this->assertPathExpressionMatchValue($path, $value);
+
+    }
+
+    /**
+     * @dataProvider pathValuesAndFlagsDataProvider
+     *
+     * This test provides all the arguments required by the command, so the
+     * command runs non-interactively and it won't ask for any argument.
+     */
+    public function testChangeConfigValueChainedNonInteractive(string $path, string $value, array $options, string $expect): void
+    {
+        $inputs = ['path' => $path, 'value' => $value ?? 'newValue'];
+
+        $this->executeCommand($inputs, $options);
+
+        list(, $code) = $this->getFilePathAndContentsFromConfigPath($path);
+
+        $this->assertEquals($expect, $this->printCode($code));
     }
 
     protected function assertPathExpressionMatchValue(string $path, string $value)
     {
-        $slash_pos = stripos($path, '/', 0);
-        $file = substr($path, 0, $slash_pos);
-        $file = str_replace('.', '/', $file);
-        $key = substr($path, $slash_pos + 1);
-        $res = require self::getSampleAppPath() . "/$file.php";
+        list($key, $res) = $this->getRealPathFromConfigPath($path);
 
         $this->assertArrayHasPathKey($key, $res, $value);
     }
 
-    private function executeCommand(array $arguments, array $inputs): void
+    /**
+     * @param array $inputs
+     * @param array $options
+     */
+    private function executeCommand(array $inputs, array $options = []): void
     {
         self::bootKernel();
 
@@ -73,7 +108,7 @@ class ConfigEditCommandTest extends KernelTestCase
         $commandTester->execute(array_merge($inputs, [
             // pass arguments to the helper
             '-d' => self::getSampleAppPath()
-        ]));
+        ], $options));
 
     }
 
@@ -116,5 +151,38 @@ class ConfigEditCommandTest extends KernelTestCase
                 $this->assertEquals($res[$key], $value);
             }
         }
+    }
+
+    /**
+     * @param string $path
+     * @return array
+     */
+    protected function getRealPathFromConfigPath(string $path): array
+    {
+        $slash_pos = stripos($path, '/', 0);
+        $file = substr($path, 0, $slash_pos);
+        $file = str_replace('.', '/', $file);
+        $key = substr($path, $slash_pos + 1);
+        $res = require self::getSampleAppPath() . "/$file.php";
+        return [$key, $res];
+    }
+
+    protected function getFilePathAndContentsFromConfigPath(string $path): array
+    {
+        $slash_pos = stripos($path, '/', 0);
+        $file = substr($path, 0, $slash_pos);
+        $file = str_replace('.', '/', $file);
+        $res = file_get_contents(self::getSampleAppPath() . "/$file.php");
+        return [$file, $res];
+    }
+
+    private function printCode(string $code): string
+    {
+        $parserFactory = new ParserFactory();
+        $parser = $parserFactory->create(ParserFactory::PREFER_PHP7);
+        $statements = $parser->parse($code);
+        $this->assertIsArray($statements);
+        $printer = new Standard();
+        return $printer->prettyPrint($statements);
     }
 }
