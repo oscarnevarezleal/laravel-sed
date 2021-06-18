@@ -1,6 +1,6 @@
 # Laravel SED  
 
-This is a CLI utility that helps in the aid of replacing values or expressions in laravel config files.
+This is a CLI utility that helps in the aid of replacing values or expressions in Laravel config files.
   
 > **Note:**  This project is primarily intended as CLI tool to manage laravel applications from the outside, although it contains several laravel commands expect that the majority of features will be unavailable as Laravel commands.
 
@@ -34,14 +34,30 @@ Available commands:
 
 ### Commands
 
-| Command        |Description                          |Laravel Example                         |
+> **Config Paths**
+>
+> Most of the commands expect a valid `config-path` to work with.
+> 
+> Config paths consists of two parts joined by a slash.
+>
+> The first part is the relative path of the file to be modified seen from the root of the project and, without especial characters nor file extensions.
+>
+> The second part is the array property path found in the file.
+>
+> **Example**
+>
+> A property _name_ in `./config/app.php` became the config path  `config.app/name`
+>
+> A nested property such as the user in a mysql connection configured in `./config/database.php` became the `config.database/connections.mysql.user`
+> 
+| Command        |Description                          |Arguments                         |
 |----------------|-------------------------------|-----------------------------|
-|larased:config-edit | Replace literal value in configuration            |`config.php/`_`timezone`_|
+|larased:config-edit | Replace configuration value            | `$config-path $value [options]`|
 
 ### Options
-|                |ASCII                          |                         |
+| Option         |ASCII                          | Comments                    |
 |----------------|-------------------------------|-----------------------------|
-|-e --envor        |`EnvOr`            | When this option is specified, the result will be a call to _env_ function using primarily the value taken from the environment key specified under the `key|-k`  parameter and secondarily a default value specified under the `value|-v` parameters. Example: `'env' => env('APP_ENV', 'production')`|
+|-e --envor        |`EnvOr`            | When this option is specified, the result will be a call to _env_ function using primarily the value taken from the environment key specified under the parameter and secondarily a default value specified under the `value|-v` parameters. Example: `'env' => env('APP_ENV', 'production')`|
 
 ## Examples
 
