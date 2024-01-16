@@ -1,0 +1,8 @@
+FROM golang:1.20-alpine
+ENV GOOS linux
+ENV CGO_ENABLED 0
+RUN apk add --no-cache ca-certificates git
+RUN git clone https://github.com/charmbracelet/gum.git
+WORKDIR /go/gum
+RUN go build -o gum
+ENTRYPOINT ["/go/gum/gum"]

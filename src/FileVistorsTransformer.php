@@ -13,9 +13,8 @@ namespace Laraboot;
 
 use PhpParser\Parser;
 use Laraboot\Schema\VisitorContext;
-use PhpParser\{NodeTraverser};
+use PhpParser\{NodeTraverser, NodeVisitor, ParserFactory, PrettyPrinter};
 use PhpParser\Node\Stmt;
-use PhpParser\ParserFactory;
 use PhpParser\PrettyPrinter\Standard;
 
 final class FileVistorsTransformer
@@ -45,7 +44,7 @@ final class FileVistorsTransformer
      */
     public function __construct(string $filename, array $visitors, VisitorContext $visitorContext)
     {
-        $this->parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $this->parser = (new ParserFactory())->createForHostVersion();
 
         $this->filename = $filename;
         $this->visitors = $visitors;
@@ -55,19 +54,22 @@ final class FileVistorsTransformer
 
     public function transform(): string
     {
-        $traverser = new NodeTraverser();
-        $prettyPrinter = new Standard;
+        $oldStmts = $this->parseFileContent();
+        $oldTokens = $this->parser->getTokens();
+
+        // Run CloningVisitor before making changes to the AST.
+        $traverser = new NodeTraverser(new NodeVisitor\CloningVisitor());
+        $newStmts = $traverser->traverse($oldStmts);
 
         foreach ($this->visitors as $visitorClass) {
+            echo $visitorClass. ' ,';
             $visitor = new $visitorClass($this->visitorContext);
             $traverser->addVisitor($visitor);
         }
 
-        $stmts = $this->parseFileContent();
-
-        $ast = $traverser->traverse($stmts);
-
-        return $prettyPrinter->prettyPrintFile($ast);
+        $newStmts = $traverser->traverse($oldStmts);
+        $printer = new PrettyPrinter\Standard();
+        return $printer->printFormatPreserving($newStmts, $oldStmts, $oldTokens);
     }
 
     /**

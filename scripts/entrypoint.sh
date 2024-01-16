@@ -25,12 +25,18 @@ if [ "$#" -lt 1 ]; then
     exit 126;
 fi
 
-php7 -derror_reporting=E_ALL "$LARASED" larased:$@ -d $LARAVEL_APP_DIR
+php -derror_reporting=E_ALL "$LARASED" larased:$@ -d $LARAVEL_APP_DIR
 
 if [ "$#" -gt 1 ]; then
-    php7 /usr/local/bin/php-cs-fixer fix \
-    --config=$LARASED_HOME/.php_cs.dist \
-    --dry-run \
-    --stop-on-violation \
-    --using-cache=no
+    php /usr/local/bin/php-cs-fixer fix \
+    --config=$LARASED_HOME/.php-cs-fixer.dist.php
+    if [ ! -f "$LARAVEL_APP_DIR/ecs.php" ]; then
+        echo "Creating ecs file"
+        php vendor/bin/ecs init
+    fi
+    php vendor/bin/ecs --fix
+    php vendor/bin/ecs list-checkers
+    pushd $LARAVEL_APP_DIR
+    php /usr/local/bin/styleci analyze
+    popd
 fi
