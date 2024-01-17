@@ -55,4 +55,4 @@ fabric.properties
 var
 sample-apps
 vendor
-bin/.phpunit
+bin/.phpunitdepot.json

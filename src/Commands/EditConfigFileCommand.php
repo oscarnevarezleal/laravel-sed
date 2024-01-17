@@ -77,9 +77,10 @@ class EditConfigFileCommand extends EditCommand
 
         $transformed = $transformer->transform();
 
+        echo $transformed;
+
         if ($output->isDebug()) {
             $output->writeln('Writing transformed file ' . $filename);
-//            $output->writeln($transformed);
         }
 
         file_put_contents($filename, $transformed);

@@ -44,8 +44,7 @@ class ChangeNestedArrayValueVisitorTest extends TestCase
            ];
         ";
 
-        $this->parser = (new \PhpParser\ParserFactory())
-            ->create(\PhpParser\ParserFactory::PREFER_PHP7);
+        $this->parser = (new \PhpParser\ParserFactory())->createForHostVersion();
 
         $traverser->addVisitor(new ChangeNestedArrayValueVisitor($visitorContext));
 
@@ -63,7 +62,7 @@ class ChangeNestedArrayValueVisitorTest extends TestCase
     /**
      * @return array
      */
-    public function scenariosProvider(): array
+    public static function scenariosProvider(): array
     {
         return [
             [

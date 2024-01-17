@@ -3,8 +3,6 @@ In order to keep the project clean, samples are kept out of the repository. Howe
 ## Laravel app
 Create a new laravel app using composer, as cited [here](https://laravel.com/docs/8.x/installation#installation-via-composer)
 ```bash
-# NOTE 
-# Make sure to run this command inside sample-apps folder
-
-composer create-project laravel/laravel laravel-app
+# run the following in the root of the project
+cd sample-apps && composer create-project laravel/laravel laravel-app
 ```

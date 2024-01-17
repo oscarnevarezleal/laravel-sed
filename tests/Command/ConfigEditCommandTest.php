@@ -26,7 +26,7 @@ class ConfigEditCommandTest extends KernelTestCase
     /**
      * A set of config path values
      */
-    public function pathAndValuesDataProvider(): ?\Generator
+    public static function pathAndValuesDataProvider(): ?\Generator
     {
         yield ['config.custom/models_namespace', 'Models'];
         yield ['config.custom/path.a.b.c.d', "true"];
@@ -42,7 +42,7 @@ class ConfigEditCommandTest extends KernelTestCase
     /**
      * A set of config path, values, flags and expectations
      */
-    public function pathValuesAndFlagsDataProvider(): ?\Generator
+    public static function pathValuesAndFlagsDataProvider(): ?\Generator
     {
         yield ['config.env/env.a.b.c.d',
             "500",
@@ -178,8 +178,7 @@ class ConfigEditCommandTest extends KernelTestCase
 
     private function printCode(string $code): string
     {
-        $parserFactory = new ParserFactory();
-        $parser = $parserFactory->create(ParserFactory::PREFER_PHP7);
+        $parser = (new \PhpParser\ParserFactory())->createForHostVersion();
         $statements = $parser->parse($code);
         $this->assertIsArray($statements);
         $printer = new Standard();
