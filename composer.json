@@ -54,6 +54,7 @@
     "symfony/yaml": "^5.2",
     "symfony/phpunit-bridge": "^5.2.0",
     
-    "symplify/easy-coding-standard": "^12.1"
+    "symplify/easy-coding-standard": "^12.1",
+    "symfony/debug-bundle": "^6.4"
   }
 }
